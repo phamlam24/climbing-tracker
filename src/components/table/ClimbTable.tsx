@@ -61,7 +61,7 @@ function SortHeader({ label, dir, onClick }: {
 export default function ClimbTable({ initialClimbs, isAdmin, dataKey }: Props) {
   const [climbs, setClimbs] = useState<Climb[]>(initialClimbs);
   // Ordered list of active sorts — first entry is primary
-  const [sorts, setSorts] = useState<SortEntry[]>([]);
+  const [sorts, setSorts] = useState<SortEntry[]>([{key: 'grade', dir: 'desc'}, {key: 'date', dir: 'desc'}]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState<Climb | null>(null);
   const [isNew, setIsNew] = useState(false);
