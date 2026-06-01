@@ -1,0 +1,52 @@
+---
+import ClimbTable from '../components/table/ClimbTable';
+import V3PlusProgress from '../components/views/V3PlusProgress.astro';
+import GradeDistribution from '../components/views/GradeDistribution.astro';
+import { isAdmin } from '../lib/admin';
+import climbs from '../data/bouldering.json';
+
+import '../styles/global.css';
+
+const admin = isAdmin(Astro.request);
+---
+
+<!doctype html>
+<html lang="en" class="macchiato">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Climbing Tracker</title>
+</head>
+<body>
+  <div class="max-w-6xl mx-auto px-6 py-10">
+
+    <header class="mb-10 pb-6 border-b border-border">
+      <h1 class="flex items-center gap-3 text-2xl font-bold tracking-tight text-text">
+        Climbing Tracker
+        {admin && (
+          <span class="text-[0.65rem] font-bold uppercase tracking-widest bg-accent text-mantle px-2 py-0.5 rounded">
+            Admin
+          </span>
+        )}
+      </h1>
+      <p class="mt-1 text-sm text-muted">Personal bouldering log</p>
+    </header>
+
+    <div class="flex flex-wrap gap-4 mb-10">
+      <V3PlusProgress climbs={climbs} goal={20} />
+      <GradeDistribution climbs={climbs} />
+    </div>
+
+    <p class="mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
+      Bouldering Log
+    </p>
+    <ClimbTable
+      client:load
+      initialClimbs={climbs}
+      isAdmin={admin}
+      dataKey="bouldering"
+    />
+
+  </div>
+</body>
+</html>

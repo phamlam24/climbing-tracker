@@ -1,0 +1,172 @@
+@import "tailwindcss";
+@import "@catppuccin/tailwindcss/macchiato.css";
+
+/*
+  Semantic aliases — map our design vocabulary onto Catppuccin Macchiato tokens.
+  Components use these names (bg-surface, text-muted, etc.) and never reference
+  ctp-* directly, so swapping flavors only requires changing these mappings.
+
+  Palette roles:
+    green  — primary accent (buttons, progress bars, active links)
+    teal   — secondary accent (hover tints, V4 grades, media links)
+    peach  — warning / mid-grade highlight (V7–V8)
+    red    — danger (delete, errors, V11+ grades)
+*/
+@theme {
+  --color-base:     var(--color-ctp-base);       /* #24273a — page bg */
+  --color-mantle:   var(--color-ctp-mantle);     /* #1e2030 — deepest bg */
+  --color-crust:    var(--color-ctp-crust);      /* #181926 — borders, lines */
+  --color-surface:  var(--color-ctp-surface0);   /* #363a4f — card / table bg */
+  --color-surface2: var(--color-ctp-surface1);   /* #494d64 — elevated elements */
+  --color-border:   var(--color-ctp-surface0);   /* same as surface, subtle */
+  --color-text:     var(--color-ctp-text);       /* #cad3f5 — primary text */
+  --color-muted:    var(--color-ctp-subtext1);   /* #b8c0e0 — secondary text */
+  --color-overlay:  var(--color-ctp-overlay1);   /* #8087a2 — placeholder / disabled */
+
+  /* Accent roles */
+  --color-accent:   var(--color-ctp-green);      /* #a6da95 — primary accent */
+  --color-accent-h: var(--color-ctp-teal);       /* #8bd5ca — hover / secondary */
+  --color-danger:   var(--color-ctp-red);        /* #ed8796 — delete / errors */
+  --color-warn:     var(--color-ctp-peach);      /* #f5a97f — mid-grade warning */
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background-color: var(--color-mantle);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-accent-h);
+    text-decoration: underline;
+  }
+
+  select option {
+    background: var(--color-surface2);
+    color: var(--color-text);
+  }
+}
+
+/* ── Shared component utilities ─────────────────────────────── */
+@layer components {
+  .th {
+    @apply text-left px-3.5 py-2.5 text-[0.68rem] font-bold uppercase tracking-widest
+           text-muted border-b border-border whitespace-nowrap;
+  }
+  .td {
+    @apply px-3.5 py-2.5 align-middle;
+  }
+  .field {
+    @apply bg-mantle border border-border text-text rounded text-[0.82rem] px-2 py-1
+           font-sans transition-colors outline-none focus:border-accent;
+  }
+}
+
+/* ── Grade pills ────────────────────────────────────────────── */
+.grade {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* beginner */
+.grade--VB, .grade--V0, .grade--V1, .grade--V2 {
+  --grade-color: var(--color-ctp-blue);
+}
+.grade--VB {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--color-ctp-blue-950);
+}
+.grade--V0 {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--V1 {
+  background: color-mix(in srgb, var(--grade-color) 24%, transparent);
+  color: var(--grade-color);
+}
+.grade--V2 {
+  background: color-mix(in srgb, var(--grade-color) 30%, transparent);
+  color: var(--grade-color);
+}
+/* intermediate */
+.grade--V3, .grade--V4 {
+  --grade-color: var(--color-ctp-red);
+}
+.grade--V3 {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--V4 {
+  background: color-mix(in srgb, var(--grade-color) 30%, transparent);
+  color: var(--grade-color);
+}
+/* advanced */
+.grade--V5, .grade--V6 {
+  --grade-color: var(--color-ctp-yellow);
+}
+.grade--V5 {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--V6 {
+  background: color-mix(in srgb, var(--grade-color) 30%, transparent);
+  color: var(--grade-color);
+}
+/* expert */
+.grade--V7, .grade--V8 {
+  --grade-color: var(--color-ctp-peach);
+}
+.grade--V7 {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--V8 {
+  background: color-mix(in srgb, var(--grade-color) 30%, transparent);
+  color: var(--grade-color);
+}
+/* grandmaster */
+.grade--V9, .grade--V10 {
+  --grade-color: var(--color-ctp-mauve);
+}
+.grade--V9 {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--V10 {
+  background: color-mix(in srgb, var(--grade-color) 30%, transparent);
+  color: var(--grade-color);
+}
+.grade--V11, .grade--V12, .grade--V13,
+.grade--V14, .grade--V15, .grade--V16, .grade--V17 {
+  --grade-color: var(--color-ctp-red);
+  background: color-mix(in srgb, var(--color-black) 18%, transparent);
+  color: var(--color-white);
+}
+
+/* ── Save error ─────────────────────────────────────────────── */
+.save-error {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+}

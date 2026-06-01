@@ -1,0 +1,39 @@
+---
+import type { Climb } from '../table/types';
+
+interface Props {
+  climbs: Climb[];
+}
+
+const { climbs } = Astro.props;
+
+const V_ORDER = ['VB','V0','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','V11','V12','V13','V14','V15','V16','V17'];
+
+const counts: Record<string, number> = {};
+for (const c of climbs) counts[c.grade] = (counts[c.grade] ?? 0) + 1;
+
+const entries = Object.entries(counts).sort(
+  ([a], [b]) => V_ORDER.indexOf(a) - V_ORDER.indexOf(b)
+);
+const max = Math.max(...Object.values(counts), 1);
+---
+
+<div class="bg-surface border border-border rounded-lg p-5 min-w-55">
+  <p class="text-[0.7rem] font-bold uppercase tracking-widest text-muted mb-3">
+    Grade Distribution
+  </p>
+  <div class="flex flex-col gap-1.5">
+    {entries.map(([grade, n]) => (
+      <div class="flex items-center gap-2">
+        <span class="text-[0.7rem] font-semibold text-muted w-9 text-right">{grade}</span>
+        <div class="flex-1 h-1.5 bg-border rounded-full overflow-hidden">
+          <div
+            class={`h-full rounded-full grade--${grade}`}
+            style={`width: ${Math.round((n / max) * 100)}%; background: var(--grade-color)`}
+          ></div>
+        </div>
+        <span class="text-[0.7rem] text-muted w-4 text-right">{n}</span>
+      </div>
+    ))}
+  </div>
+</div>

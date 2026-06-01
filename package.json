@@ -1,0 +1,23 @@
+{
+  "name": "climbing-tracker",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/preact": "^5.1.4",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.4.2",
+    "preact": "^10.29.2",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@catppuccin/tailwindcss": "^1.0.0",
+    "@types/node": "^25.9.1"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(npx astro *)",
+      "Bash(del \"e:\\\\Projects\\\\climbing-tracker\\\\src\\\\components\\\\ClimbTable.tsx\")",
+      "Bash(node -e \"const tw = require\\('tailwindcss/package.json'\\); console.log\\(tw.version\\)\")",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:tailwindcss.catppuccin.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch",
+      "WebFetch(domain:catppuccin.com)",
+      "Bash(dir /s /b \"e:\\\\Projects\\\\climbing-tracker\\\\src\")"
+    ]
+  }
+}
