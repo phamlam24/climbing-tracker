@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- hold / jug: a chunky rounded blob -->
+  <rect x="6" y="17" width="20" height="10" rx="5" fill="#a6da95"/>
+  <ellipse cx="16" cy="17" rx="10" ry="5" fill="#a6da95"/>
+  <!-- grip shadow -->
+  <ellipse cx="16" cy="18.5" rx="6" ry="2.5" fill="#24273a" opacity="0.2"/>
+  <!-- up arrow in mantle color -->
+  <path d="M16 3 L10 11 H13.5 V16 H18.5 V11 H22 Z" fill="#ee99a0"/>
+</svg>
