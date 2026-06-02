@@ -1,0 +1,24 @@
+---
+import StatCard from './StatCard.astro';
+import { getCollection } from 'astro:content';
+
+const reviews = (await getCollection('gym-reviews')).sort(
+  (a, b) => b.data.date.localeCompare(a.data.date)
+);
+---
+
+<StatCard label="Bouldering Gym Reviews" class="min-w-48 max-w-72">
+  <ul class="flex flex-col gap-1.5">
+    {reviews.map(review => (
+      <li>
+        <a
+          href={`/blog/${review.id}`}
+          class="flex items-start gap-2 text-[0.82rem] text-text hover:text-accent transition-colors group"
+        >
+          <span class="mt-[0.2rem] text-accent leading-none group-hover:text-accent-h transition-colors">•</span>
+          {review.data.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</StatCard>

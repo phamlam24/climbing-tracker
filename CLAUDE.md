@@ -1,5 +1,9 @@
 # Climbing Tracker — Claude Code context
 
+## Coding style
+
+- **No one-off CSS**: don't hand-write one-off styles for something a library or plugin already handles well (e.g. typography, animations). Install the proper tool instead.
+
 ## What this is
 
 A personal climbing log website. The public sees a read-only table and stat views. The owner (you) gets inline editing controls when browsing on localhost or with a secret URL token.

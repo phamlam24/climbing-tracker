@@ -1,4 +1,5 @@
 ---
+import StatCard from './StatCard.astro';
 import type { Climb } from '../table/types';
 
 interface Props {
@@ -14,43 +15,31 @@ const v3idx = V_ORDER.indexOf('V3');
 const count = climbs.filter(c => V_ORDER.indexOf(c.grade) >= v3idx).length;
 const pct = Math.min(100, (count / goal) * 100);
 
-// SVG circle math
 const r = 36;
 const cx = 48;
 const circumference = 2 * Math.PI * r;
 const dash = (pct / 100) * circumference;
 ---
 
-<div class="bg-surface border border-border rounded-lg p-5 flex flex-col items-center gap-2 min-w-40">
-  <p class="text-[0.7rem] font-bold uppercase tracking-widest text-muted self-start">
-    Goal: V3+ Ascents
-  </p>
-
-  <div class="relative w-24 h-24">
-    <svg viewBox="0 0 96 96" class="w-full h-full -rotate-90">
-      <!-- track -->
-      <circle
-        cx={cx} cy={cx} r={r}
-        fill="none"
-        stroke="var(--color-surface2)"
-        stroke-width="8"
-      />
-      <!-- fill -->
-      <circle
-        cx={cx} cy={cx} r={r}
-        fill="none"
-        stroke="var(--color-accent)"
-        stroke-width="8"
-        stroke-linecap="round"
-        stroke-dasharray={`${dash} ${circumference}`}
-      />
-    </svg>
-    <!-- centre label -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center">
-      <span class="text-xl font-bold text-text leading-none">{count}</span>
-      <span class="text-[0.65rem] text-muted leading-none">/ {goal}</span>
+<StatCard label="Goal: V3+ Ascents" class="min-w-40 items-center">
+  <div class="flex flex-col items-center gap-2">
+    <div class="relative w-24 h-24">
+      <svg viewBox="0 0 96 96" class="w-full h-full -rotate-90">
+        <circle cx={cx} cy={cx} r={r} fill="none" stroke="var(--color-surface2)" stroke-width="8" />
+        <circle
+          cx={cx} cy={cx} r={r}
+          fill="none"
+          stroke="var(--color-accent)"
+          stroke-width="8"
+          stroke-linecap="round"
+          stroke-dasharray={`${dash} ${circumference}`}
+        />
+      </svg>
+      <div class="absolute inset-0 flex flex-col items-center justify-center">
+        <span class="text-xl font-bold text-text leading-none">{count}</span>
+        <span class="text-[0.65rem] text-muted leading-none">/ {goal}</span>
+      </div>
     </div>
+    <p class="text-[0.7rem] text-muted">{Math.round(pct)}% of goal</p>
   </div>
-
-  <p class="text-[0.7rem] text-muted">{Math.round(pct)}% of goal</p>
-</div>
+</StatCard>

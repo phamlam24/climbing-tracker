@@ -6,9 +6,10 @@ interface Props {
   editingAny: boolean;
   onEdit: () => void;
   onDelete: () => void;
+  onSend?: () => void;
 }
 
-export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete }: Props) {
+export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete, onSend }: Props) {
   const gradeClass = `grade grade--${climb.grade.replace('+', 'plus')}`;
 
   return (
@@ -36,6 +37,15 @@ export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete 
       {isAdmin && (
         <td class="td">
           <div class="flex gap-1.5">
+            {onSend && (
+              <button
+                class="text-xs font-semibold px-2 py-1 rounded bg-accent text-mantle hover:bg-accent-h transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+                onClick={onSend}
+                disabled={editingAny}
+              >
+                Send
+              </button>
+            )}
             <button
               class="text-xs font-semibold px-2 py-1 rounded bg-surface2 text-text hover:bg-accent hover:text-mantle transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
               onClick={onEdit}

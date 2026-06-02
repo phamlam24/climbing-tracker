@@ -1,18 +1,13 @@
 import type { APIRoute } from 'astro';
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
 import { isAdmin } from '../../lib/admin';
 
 const dataPath = join(
   dirname(fileURLToPath(import.meta.url)),
-  '../../data/bouldering.json'
+  '../../data/projects.json'
 );
-
-export const GET: APIRoute = async () => {
-  const data = await readFile(dataPath, 'utf-8');
-  return new Response(data, { headers: { 'Content-Type': 'application/json' } });
-};
 
 export const POST: APIRoute = async ({ request }) => {
   if (!isAdmin(request)) {

@@ -8,6 +8,7 @@ interface Props {
   initialClimbs: Climb[];
   isAdmin: boolean;
   dataKey: string;
+  onSendClimb?: (climb: Climb) => Promise<void>;
 }
 
 // ── Sort state ────────────────────────────────────────────────
@@ -57,8 +58,13 @@ function SortHeader({ label, dir, onClick }: {
   );
 }
 
+const NOISE_RE = /warmup|warm-up|padding/i;
+function isNoise(c: Climb) {
+  return NOISE_RE.test(c.name) || NOISE_RE.test(c.notes);
+}
+
 // ── Main component ────────────────────────────────────────────
-export default function ClimbTable({ initialClimbs, isAdmin, dataKey }: Props) {
+export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClimb }: Props) {
   const [climbs, setClimbs] = useState<Climb[]>(initialClimbs);
   // Ordered list of active sorts — first entry is primary
   const [sorts, setSorts] = useState<SortEntry[]>([{key: 'grade', dir: 'desc'}, {key: 'date', dir: 'desc'}]);
@@ -67,6 +73,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey }: Props) {
   const [isNew, setIsNew] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [collapsed, setCollapsed] = useState(true);
 
   const clickSort = (key: SortKey) => {
     setSorts(prev => {
@@ -130,10 +137,25 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey }: Props) {
     await persist(climbs.filter(c => c.id !== id));
   };
 
+  const send = onSendClimb
+    ? async (climb: Climb) => {
+        try {
+          await onSendClimb(climb);
+        } catch (e: any) {
+          if (e?.message === 'cancelled') return;
+          setSaveError(e?.message || 'Send failed');
+          return;
+        }
+        await persist(climbs.filter(c => c.id !== climb.id));
+      }
+    : undefined;
+
   const setField = (field: keyof Climb, value: any) =>
     setDraft(d => (d ? { ...d, [field]: value } : d));
 
   const sorted = applySorts(climbs, sorts);
+  const visible = collapsed ? sorted.filter(c => !isNoise(c)) : sorted;
+  const hiddenCount = sorted.length - sorted.filter(c => !isNoise(c)).length;
   const dirOf = (key: SortKey) => sorts.find(s => s.key === key)?.dir ?? null;
 
   return (
@@ -154,11 +176,20 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey }: Props) {
               <th class="th">Tags</th>
               <th class="th">Notes</th>
               <th class="th">Media</th>
-              {isAdmin && <th class="th">Actions</th>}
+              <th class="th text-right" colspan={isAdmin ? 2 : 1} style="min-width: 8rem">
+                {hiddenCount > 0 && (
+                  <button
+                    class="text-[0.65rem] font-bold uppercase tracking-widest text-overlay hover:text-text transition-colors"
+                    onClick={() => setCollapsed(c => !c)}
+                  >
+                    {collapsed ? `Show all (${hiddenCount} hidden)` : 'Show filtered'}
+                  </button>
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {sorted.map(climb =>
+            {visible.map(climb =>
               editingId === climb.id && !isNew && draft ? (
                 <ClimbRowEdit
                   key={climb.id}
@@ -176,6 +207,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey }: Props) {
                   editingAny={!!editingId}
                   onEdit={() => startEdit(climb)}
                   onDelete={() => remove(climb.id)}
+                  onSend={send ? () => send(climb) : undefined}
                 />
               )
             )}

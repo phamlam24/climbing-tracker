@@ -11,7 +11,8 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebSearch",
       "WebFetch(domain:catppuccin.com)",
-      "Bash(dir /s /b \"e:\\\\Projects\\\\climbing-tracker\\\\src\")"
+      "Bash(dir /s /b \"e:\\\\Projects\\\\climbing-tracker\\\\src\")",
+      "Bash(Remove-Item \"e:\\\\Projects\\\\climbing-tracker\\\\src\\\\content\\\\config.ts\")"
     ]
   }
 }

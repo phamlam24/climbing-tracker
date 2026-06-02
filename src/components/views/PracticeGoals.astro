@@ -1,0 +1,21 @@
+---
+import StatCard from './StatCard.astro';
+
+const goals = [
+  "Improve endurance",
+  "Keep hips inside and close",
+  "Grab things harder",
+  "Have fun!"
+];
+---
+
+<StatCard label="Practice Goals" class="min-w-48 max-w-64">
+  <ul class="flex flex-col gap-1.5">
+    {goals.map(g => (
+      <li class="flex items-start gap-2 text-[0.82rem] text-text">
+        <span class="mt-[0.2rem] text-accent leading-none">•</span>
+        {g}
+      </li>
+    ))}
+  </ul>
+</StatCard>

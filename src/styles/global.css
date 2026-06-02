@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@catppuccin/tailwindcss/macchiato.css";
+@plugin "@tailwindcss/typography";
 
 /*
   Semantic aliases — map our design vocabulary onto Catppuccin Macchiato tokens.
@@ -90,19 +91,19 @@
   --grade-color: var(--color-ctp-blue);
 }
 .grade--VB {
-  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  background: color-mix(in srgb, var(--grade-color) 10%, transparent);
   color: var(--color-ctp-blue-950);
 }
 .grade--V0 {
-  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  background: color-mix(in srgb, var(--grade-color) 10%, transparent);
   color: var(--grade-color);
 }
 .grade--V1 {
-  background: color-mix(in srgb, var(--grade-color) 24%, transparent);
+  background: color-mix(in srgb, var(--grade-color) 25%, transparent);
   color: var(--grade-color);
 }
 .grade--V2 {
-  background: color-mix(in srgb, var(--grade-color) 30%, transparent);
+  background: color-mix(in srgb, var(--grade-color) 40%, transparent);
   color: var(--grade-color);
 }
 /* intermediate */
@@ -110,11 +111,11 @@
   --grade-color: var(--color-ctp-red);
 }
 .grade--V3 {
-  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  background: color-mix(in srgb, var(--grade-color) 20%, transparent);
   color: var(--grade-color);
 }
 .grade--V4 {
-  background: color-mix(in srgb, var(--grade-color) 30%, transparent);
+  background: color-mix(in srgb, var(--grade-color) 40%, transparent);
   color: var(--grade-color);
 }
 /* advanced */

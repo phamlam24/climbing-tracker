@@ -82,11 +82,15 @@
   },
   {
     "id": "10",
-    "name": "V2 Padding",
+    "name": "White Endurance V2",
     "grade": "V2",
-    "tags": [],
+    "tags": [
+      "pocket",
+      "endurance",
+      "project"
+    ],
     "mediaUrl": "",
-    "notes": "Rough padding for the number of boulders I've climbed @ Rochester",
+    "notes": "Very fun project - end up in a zigzag route using many different holds",
     "date": "2026-05-20"
   },
   {
@@ -122,7 +126,8 @@
     "grade": "V3",
     "tags": [
       "sloper",
-      "static"
+      "static",
+      "flash"
     ],
     "mediaUrl": "",
     "notes": "First V3 + First V3 Flash (probably not a V3 tbh)",
@@ -133,10 +138,93 @@
     "name": "Purple Deadpoint",
     "grade": "V3",
     "tags": [
-      "deadpoint"
+      "deadpoint",
+      "project"
     ],
     "mediaUrl": "https://drive.google.com/file/d/1OVfnygNwKC8BDkJOF-ffPMdP2IP1ZUdz/view?usp=sharing",
     "notes": "Second V3 + first tiny dyno/deadpoint jump (V2 if I know how to use hips, V3 the way I climb)",
     "date": "2026-05-20"
+  },
+  {
+    "id": "5e00f7ed-2f64-4e97-9f42-c559d4e921d1",
+    "name": "Yosemite Slab Trolling",
+    "grade": "V0",
+    "tags": [
+      "slab",
+      "outdoors",
+      "flash"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/10oWewkOD84yLh3yFt8XXN85j9JTwbrdE/view?usp=sharing",
+    "notes": "Troll problem I set for myself while going to Yosemite.",
+    "date": "2026-05-27"
+  },
+  {
+    "id": "30bacb45-b9ec-4ea6-99ec-412926f98786",
+    "name": "Yellow V0",
+    "grade": "V0",
+    "tags": [
+      "sloper"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1WFKZwxU3-NUjrWEJ_M1xg6DZacB-KSNO/view?usp=sharing",
+    "notes": "Warmup",
+    "date": "2026-06-02"
+  },
+  {
+    "id": "96d36a51-6fc6-437a-ba81-99a202bfb0ca",
+    "name": "White Pinch V1",
+    "grade": "V1",
+    "tags": [
+      "pinch"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1sLS5DaittbyWjCNCLhu3SfEJNGaZMEXA/view?usp=sharing",
+    "notes": "Fun horizontal movement and intro to pinches. VERY slanted image for ref",
+    "date": "2026-06-02"
+  },
+  {
+    "id": "00376b25-7076-4891-a994-96ba3e681515",
+    "name": "Orange Technical V1",
+    "grade": "V1",
+    "tags": [
+      "technique",
+      "undercling",
+      "crimp"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1y1ePN7SfH0ekDjO_Xyrq7et3_yj_B9yu/view?usp=sharing",
+    "notes": "Deceptively hard, I failed a few times due to not remembering to center my hips in the stable zone. No recording for success attempt so I'm going to just link the closest attempt",
+    "date": "2026-06-02"
+  },
+  {
+    "id": "1af9917a-da35-400e-afb6-249a2eb5357c",
+    "name": "Orange Power V2",
+    "grade": "V2",
+    "tags": [
+      "power",
+      "deadpoint",
+      "flash"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1Yx_rmoYrTQI_xttMxBxB3UoP2goPnCjF/view?usp=sharing",
+    "notes": "If there's one move I can do well for my grade, that's the deadpoint. I've grown to not fear it anymore",
+    "date": "2026-06-02"
+  },
+  {
+    "id": "7eb0a3bc-8970-4b53-a228-146a146ae348",
+    "name": "Purple Warmup",
+    "grade": "V0",
+    "tags": [],
+    "mediaUrl": "",
+    "notes": "Warmup",
+    "date": "2026-06-02"
+  },
+  {
+    "id": "e1e8601b-1f66-4ffb-a49b-b8ab964174e6",
+    "name": "Overhang V1",
+    "grade": "V1",
+    "tags": [
+      "overhang",
+      "endurance"
+    ],
+    "mediaUrl": "",
+    "notes": "Not too much details remembered, just a bit of an overhang climb",
+    "date": "2026-06-02"
   }
 ]

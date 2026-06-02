@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const reviews = (await getCollection('gym-reviews')).sort(
+  (a, b) => b.data.date.localeCompare(a.data.date)
+);
+---
+
+<BaseLayout title="Hanoi Bouldering Gym Reviews — Climbing Tracker">
+
+  <p class="mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
+    Hanoi Bouldering Gym Reviews
+  </p>
+
+  <div class="flex flex-col gap-3">
+    {reviews.map((review) => (
+      <a
+        href={`/blog/${review.id}`}
+        class="block bg-surface border border-border rounded-lg px-5 py-4 hover:border-accent transition-colors group"
+      >
+        <div class="flex items-baseline justify-between gap-4">
+          <span class="font-semibold text-text group-hover:text-accent transition-colors">
+            {review.data.title}
+          </span>
+          <span class="text-xs text-overlay shrink-0">{review.data.date}</span>
+        </div>
+        {review.data.summary && (
+          <p class="mt-1 text-sm text-muted">{review.data.summary}</p>
+        )}
+      </a>
+    ))}
+  </div>
+
+</BaseLayout>
