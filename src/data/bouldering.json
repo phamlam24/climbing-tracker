@@ -229,6 +229,35 @@
     "date": "2026-06-02"
   },
   {
+    "id": "5ecda5d9-02ec-4eb2-a999-ec7550631a36",
+    "name": "V0 Warmup",
+    "grade": "V0",
+    "tags": [],
+    "mediaUrl": "",
+    "notes": "",
+    "date": "2026-06-05"
+  },
+  {
+    "id": "63592efb-82e5-480a-b24e-d5bb9d1e1751",
+    "name": "V1 Warmup",
+    "grade": "V1",
+    "tags": [],
+    "mediaUrl": "",
+    "notes": "",
+    "date": "2026-06-05"
+  },
+  {
+    "id": "a44d8fd6-6f83-4fc5-b7ae-74f763eebd54",
+    "name": "Dihedral V2",
+    "grade": "V2",
+    "tags": [
+      "dihedral"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1UX1gJLt3iYHtHETg7qgFBeLQ-O-14OPe/view?usp=sharing",
+    "notes": "",
+    "date": "2026-06-05"
+  },
+  {
     "id": "d8286ff3-f55a-42ae-afa0-56c6bfd66f45",
     "name": "Black Footwork",
     "grade": "V2",
