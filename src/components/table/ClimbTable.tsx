@@ -109,7 +109,9 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
     setSaving(true);
     setSaveError('');
     try {
-      const res = await fetch(`/api/${dataKey}`, {
+      const token = new URLSearchParams(window.location.search).get('admin');
+      const apiUrl = token ? `/api/${dataKey}?admin=${encodeURIComponent(token)}` : `/api/${dataKey}`;
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(next),
