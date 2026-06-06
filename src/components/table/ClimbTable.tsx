@@ -74,6 +74,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [collapsed, setCollapsed] = useState(true);
+  const [infoClimb, setInfoClimb] = useState<Climb | null>(null);
 
   const clickSort = (key: SortKey) => {
     setSorts(prev => {
@@ -164,7 +165,75 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
     <div>
       {saveError && <p class="save-error">{saveError}</p>}
 
-      <div class="overflow-x-auto rounded-lg border border-border">
+      {/* Mobile card list */}
+      <div class="md:hidden flex flex-col gap-2">
+        {visible.map(climb => {
+          const gradeClass = `grade grade--${climb.grade.replace('+', 'plus')}`;
+          return (
+            <div key={climb.id} class="flex items-center gap-3 bg-surface border border-border rounded-lg px-4 py-3">
+              <span class={gradeClass}>{climb.grade}</span>
+              <span class="flex-1 font-medium text-text text-sm truncate">{climb.name}</span>
+              {climb.mediaUrl && (
+                <a href={climb.mediaUrl} target="_blank" rel="noopener" class="text-accent-h hover:text-accent transition-colors shrink-0" title="Watch">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </a>
+              )}
+              <button
+                onClick={() => setInfoClimb(climb)}
+                class="text-muted hover:text-text transition-colors shrink-0"
+                title="Info"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              </button>
+            </div>
+          );
+        })}
+        {hiddenCount > 0 && (
+          <button
+            class="text-[0.65rem] font-bold uppercase tracking-widest text-overlay hover:text-text transition-colors text-center py-1"
+            onClick={() => setCollapsed(c => !c)}
+          >
+            {collapsed ? `Show all (${hiddenCount} hidden)` : 'Show filtered'}
+          </button>
+        )}
+      </div>
+
+      {/* Info overlay */}
+      {infoClimb && (
+        <div
+          class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+          onClick={() => setInfoClimb(null)}
+        >
+          <div
+            class="bg-mantle border border-border rounded-xl p-6 max-w-sm w-full"
+            onClick={e => e.stopPropagation()}
+          >
+            <div class="flex items-center justify-between mb-4">
+              <span class={`grade grade--${infoClimb.grade.replace('+', 'plus')}`}>{infoClimb.grade}</span>
+              <button onClick={() => setInfoClimb(null)} class="text-muted hover:text-text transition-colors text-lg leading-none">✕</button>
+            </div>
+            <h2 class="text-text font-semibold text-[1rem] mb-1">{infoClimb.name}</h2>
+            <p class="text-muted text-xs mb-3">{infoClimb.date}</p>
+            {infoClimb.tags.length > 0 && (
+              <div class="flex flex-wrap gap-1 mb-3">
+                {infoClimb.tags.map(t => (
+                  <span key={t} class="inline-flex items-center bg-surface2 text-muted text-[0.68rem] font-medium px-1.5 py-0.5 rounded">{t}</span>
+                ))}
+              </div>
+            )}
+            {infoClimb.notes && <p class="text-text text-sm mb-4">{infoClimb.notes}</p>}
+            {infoClimb.mediaUrl && (
+              <a href={infoClimb.mediaUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-accent-h text-sm hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Watch
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Desktop table */}
+      <div class="hidden md:block overflow-x-auto rounded-lg border border-border">
         <table class="w-full border-collapse text-sm">
           <thead>
             <tr class="bg-surface">
@@ -230,7 +299,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
 
       {isAdmin && !editingId && (
         <button
-          class="mt-2 w-full border border-dashed border-border text-accent text-sm font-semibold py-2 px-4 rounded-lg hover:bg-surface hover:border-accent transition-colors"
+          class="hidden md:block mt-2 w-full border border-dashed border-border text-accent text-sm font-semibold py-2 px-4 rounded-lg hover:bg-surface hover:border-accent transition-colors"
           onClick={startNew}
         >
           + Add climb

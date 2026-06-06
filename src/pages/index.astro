@@ -18,7 +18,17 @@ const admin = isAdmin(Astro.request);
 
 <BaseLayout>
 
-  <div class="flex flex-wrap gap-4 mb-10">
+  <!-- Mobile layout (< md) -->
+  <div class="md:hidden flex flex-col gap-4 mb-8">
+    <V3PlusProgress climbs={climbs} goal={10} />
+    <PracticeGoals class="w-full" />
+    <a href="/blog" class="text-accent hover:text-accent-h text-sm font-medium transition-colors">
+      → Gym Reviews
+    </a>
+  </div>
+
+  <!-- Desktop layout (≥ md) -->
+  <div class="hidden md:flex flex-wrap gap-4 mb-10">
     <V3PlusProgress climbs={climbs} goal={10} />
     <GradeDistribution climbs={climbs} />
     <PracticeGoals />
@@ -26,7 +36,7 @@ const admin = isAdmin(Astro.request);
   </div>
 
   <p class="mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
-    Bouldering Log
+    Ascents
   </p>
   <ClimbTable
     client:load
