@@ -6,9 +6,12 @@ import V3PlusProgress from '../components/views/V3PlusProgress.astro';
 import GradeDistribution from '../components/views/GradeDistribution.astro';
 import PracticeGoals from '../components/views/PracticeGoals.astro';
 import GymReviews from '../components/views/GymReviews.astro';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { isAdmin } from '../lib/admin';
-import climbs from '../data/bouldering.json';
-import projects from '../data/projects.json';
+
+const climbs = JSON.parse(await readFile(join(process.cwd(), 'src/data/bouldering.json'), 'utf-8'));
+const projects = JSON.parse(await readFile(join(process.cwd(), 'src/data/projects.json'), 'utf-8'));
 
 const admin = isAdmin(Astro.request);
 ---
