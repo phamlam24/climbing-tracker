@@ -139,7 +139,8 @@
     "grade": "V3",
     "tags": [
       "deadpoint",
-      "project"
+      "project",
+      "dyno"
     ],
     "mediaUrl": "https://drive.google.com/file/d/1OVfnygNwKC8BDkJOF-ffPMdP2IP1ZUdz/view?usp=sharing",
     "notes": "Second V3 + first tiny dyno/deadpoint jump (V2 if I know how to use hips, V3 the way I climb)",
@@ -226,5 +227,53 @@
     "mediaUrl": "",
     "notes": "Not too much details remembered, just a bit of an overhang climb",
     "date": "2026-06-02"
+  },
+  {
+    "id": "d8286ff3-f55a-42ae-afa0-56c6bfd66f45",
+    "name": "Black Footwork",
+    "grade": "V2",
+    "tags": [
+      "footwork",
+      "power"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1UnX74k1GGlwM7WeX7Jnb6mygYnTkmTS6/view?usp=sharing",
+    "notes": "V2+. Deviously tricky big circular hold at the bottom - place your foot anywhere except dead center will result in slipping on the step up",
+    "date": "2026-06-06"
+  },
+  {
+    "id": "0e31fb15-bbff-468c-890d-dec2395ebeb5",
+    "name": "Static Slabber",
+    "grade": "V3",
+    "tags": [
+      "slab",
+      "footwork",
+      "static"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1-xTr6j6nZ_fdEeLk2sz4p-npRCvGggmm/view?usp=sharing",
+    "notes": "V3-/V2+? Very tiny holds, so you have to focus everything on your feet and trust. Cross move is fun",
+    "date": "2026-06-06"
+  },
+  {
+    "id": "b67c52e6-64c7-4960-9232-4ef60ebf48c7",
+    "name": "Orange Dihedral",
+    "grade": "V2",
+    "tags": [
+      "dihedral",
+      "heel hook"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1lslTVsSWt_ZUlZpL7l5Uf5wPBntF6g9B/view?usp=sharing",
+    "notes": "I like this one, you can top off, pushing moves, hip movement, tiny heel hook",
+    "date": "2026-06-06"
+  },
+  {
+    "id": "00efe9ba-8cc3-4766-b7f9-381ac0d9ca06",
+    "name": "Yellow Sideway",
+    "grade": "V1",
+    "tags": [
+      "footwork"
+    ],
+    "mediaUrl": "https://drive.google.com/file/d/1bKfafFJK2g35Q9Y0Pu3Nuir9kMgQmpr4/view?usp=sharing",
+    "notes": "These kind of problems looks trickier than they actually are - spreading feet is very stable",
+    "date": "2026-06-06"
   }
 ]

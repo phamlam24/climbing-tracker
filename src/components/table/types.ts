@@ -17,7 +17,7 @@ export const PRESET_TAGS = [
   'crimp', 'sloper', 'pinch', 'pocket', 'undercling', // hold types
   'dyno', 'static', // movement
   'heel hook', 'toe hook', 'deadpoint', // techniques
-  'endurance', 'power', 'routing', 'technique', // requirements
+  'endurance', 'power', 'routing', 'technique', 'footwork', // requirements
   'dihedral', 'arete', 'overhang', 'slab', // terrain types
   'flash', 'project', // personal status on boulders
 ];
