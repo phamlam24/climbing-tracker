@@ -7,6 +7,9 @@ dist/
 # Astro cache
 .astro/
 
+# Live data — edited via the UI on the server, not tracked in git
+src/data/*.json
+
 # Environment — copy .env.example and fill in your token
 .env
 
