@@ -28,6 +28,7 @@ jobs:
           ssh lpham@ssh.lampham.space "
             cd /var/www/climbing.lampham.space &&
             git pull &&
+            echo 'KEY=${{ secrets.YOUR_KEY }}' > .env &&
             npm ci --legacy-peer-deps &&
             npm run build &&
             sudo systemctl restart climbing
