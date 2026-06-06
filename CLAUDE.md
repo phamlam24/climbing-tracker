@@ -3,6 +3,7 @@
 ## Coding style
 
 - **No one-off CSS**: don't hand-write one-off styles for something a library or plugin already handles well (e.g. typography, animations). Install the proper tool instead.
+- **Log errors in API routes**: wrap all I/O in try/catch and `console.error(...)` before returning a 500. Include the route name and operation in the message (e.g. `[api/bouldering] writeFile failed:`). This surfaces errors in server logs (`journalctl -u climbing`) instead of returning a silent 500.
 
 ## What this is
 
