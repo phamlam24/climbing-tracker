@@ -11,13 +11,16 @@ export default function ProjectsSection({ initialProjects, isAdmin }: Props) {
     const today = new Date().toISOString().slice(0, 10);
     if (!confirm(`Move "${climb.name}" to the bouldering log?\n\nDate will be set to today (${today}).`)) throw new Error('cancelled');
 
-    const res = await fetch('/api/bouldering');
+    const token = new URLSearchParams(window.location.search).get('admin');
+    const qs = token ? `?admin=${encodeURIComponent(token)}` : '';
+
+    const res = await fetch(`/api/bouldering${qs}`);
     if (!res.ok) throw new Error('Failed to fetch bouldering log');
     const current: Climb[] = await res.json();
 
     const tags = climb.tags.includes('project') ? climb.tags : [...climb.tags, 'project'];
     const sent = { ...climb, date: today, tags };
-    const postRes = await fetch('/api/bouldering', {
+    const postRes = await fetch(`/api/bouldering${qs}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify([...current, sent]),
