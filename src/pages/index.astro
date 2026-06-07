@@ -8,12 +8,15 @@ import PracticeGoals from '../components/views/PracticeGoals.astro';
 import GymReviews from '../components/views/GymReviews.astro';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { execSync } from 'node:child_process';
 import { isAdmin } from '../lib/admin';
 
 const climbs = JSON.parse(await readFile(join(process.cwd(), 'src/data/bouldering.json'), 'utf-8'));
 const projects = JSON.parse(await readFile(join(process.cwd(), 'src/data/projects.json'), 'utf-8'));
 
 const admin = isAdmin(Astro.request);
+const lastUpdated = execSync('git log -1 --format=%cd --date=short').toString().trim();
+const lastClimb = climbs.reduce((max: string, c: { date: string }) => c.date > max ? c.date : max, '');
 ---
 
 <BaseLayout>
@@ -53,5 +56,9 @@ const admin = isAdmin(Astro.request);
     initialProjects={projects}
     isAdmin={admin}
   />
+
+  <footer class="mt-12 pt-4 border-t border-border text-center text-xs text-overlay">
+    last climb recorded {lastClimb} · website code last updated {lastUpdated}
+  </footer>
 
 </BaseLayout>
