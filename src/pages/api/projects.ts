@@ -1,13 +1,9 @@
 import type { APIRoute } from 'astro';
 import { writeFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-import { join, dirname } from 'node:path';
+import { join } from 'node:path';
 import { isAdmin } from '../../lib/admin';
 
-const dataPath = join(
-  dirname(fileURLToPath(import.meta.url)),
-  '../../data/projects.json'
-);
+const dataPath = join(process.cwd(), 'src/data/projects.json');
 
 export const POST: APIRoute = async ({ request }) => {
   if (!isAdmin(request)) {
@@ -25,6 +21,11 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response('Expected an array', { status: 400 });
   }
 
-  await writeFile(dataPath, JSON.stringify(body, null, 2), 'utf-8');
+  try {
+    await writeFile(dataPath, JSON.stringify(body, null, 2), 'utf-8');
+  } catch (e) {
+    console.error('[api/projects] writeFile failed:', e);
+    return new Response('Internal Server Error', { status: 500 });
+  }
   return new Response('OK');
 };
