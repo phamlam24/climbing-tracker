@@ -16,7 +16,7 @@ for (const c of climbs) counts[c.grade] = (counts[c.grade] ?? 0) + 1;
 const entries = Object.entries(counts).sort(
   ([a], [b]) => V_ORDER.indexOf(a) - V_ORDER.indexOf(b)
 );
-const max = Math.max(...Object.values(counts), 1);
+const max = Math.min(Math.max(...Object.values(counts), 1), 10);
 ---
 
 <StatCard label="Grade Distribution" class="min-w-55">
@@ -27,10 +27,10 @@ const max = Math.max(...Object.values(counts), 1);
         <div class="flex-1 h-1.5 bg-border rounded-full overflow-hidden">
           <div
             class={`h-full rounded-full grade--${grade}`}
-            style={`width: ${Math.round((n / max) * 100)}%; background: var(--grade-color)`}
+            style={`width: ${Math.round((Math.min(n, 10) / max) * 100)}%; background: var(--grade-color)`}
           ></div>
         </div>
-        <span class="text-[0.7rem] text-muted w-4 text-right">{n}</span>
+        <span class="text-[0.7rem] text-muted w-6 text-right">{n >= 10 ? '10+' : n}</span>
       </div>
     ))}
   </div>

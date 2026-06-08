@@ -63,6 +63,25 @@ function isNoise(c: Climb) {
   return NOISE_RE.test(c.name) || NOISE_RE.test(c.notes);
 }
 
+function getYouTubeVideoId(url: string): { id: string; isShorts: boolean } | null {
+  try {
+    const u = new URL(url);
+    if (u.hostname === 'youtu.be') {
+      const id = u.pathname.slice(1).split('/')[0];
+      return id ? { id, isShorts: false } : null;
+    }
+    if (u.hostname.includes('youtube.com')) {
+      const shorts = u.pathname.match(/\/shorts\/([^/?]+)/);
+      if (shorts) return { id: shorts[1], isShorts: true };
+      const v = u.searchParams.get('v');
+      if (v) return { id: v, isShorts: false };
+      const embed = u.pathname.match(/\/embed\/([^/?]+)/);
+      if (embed) return { id: embed[1], isShorts: false };
+    }
+  } catch {}
+  return null;
+}
+
 // ── Main component ────────────────────────────────────────────
 export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClimb }: Props) {
   const [climbs, setClimbs] = useState<Climb[]>(initialClimbs);
@@ -75,6 +94,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
   const [saveError, setSaveError] = useState('');
   const [collapsed, setCollapsed] = useState(true);
   const [infoClimb, setInfoClimb] = useState<Climb | null>(null);
+  const [youtubeInfo, setYoutubeInfo] = useState<{ id: string; isShorts: boolean } | null>(null);
 
   const clickSort = (key: SortKey) => {
     setSorts(prev => {
@@ -119,6 +139,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
       });
       if (!res.ok) throw new Error(await res.text());
       setClimbs(next);
+      window.location.reload();
     } catch (e: any) {
       setSaveError(e.message || 'Save failed');
     } finally {
@@ -156,9 +177,15 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
   const setField = (field: keyof Climb, value: any) =>
     setDraft(d => (d ? { ...d, [field]: value } : d));
 
+  const openYoutube = (url: string) => {
+    const info = getYouTubeVideoId(url);
+    if (info) setYoutubeInfo(info);
+    else window.open(url, '_blank', 'noopener');
+  };
+
   const sorted = applySorts(climbs, sorts);
-  const visible = collapsed ? sorted.filter(c => !isNoise(c)) : sorted;
-  const hiddenCount = sorted.length - sorted.filter(c => !isNoise(c)).length;
+  const visible = collapsed ? sorted.filter(c => !isNoise(c) && !!c.mediaUrl) : sorted;
+  const hiddenCount = sorted.length - sorted.filter(c => !isNoise(c) && !!c.mediaUrl).length;
   const dirOf = (key: SortKey) => sorts.find(s => s.key === key)?.dir ?? null;
 
   return (
@@ -174,7 +201,14 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
               <span class={gradeClass}>{climb.grade}</span>
               <span class="flex-1 font-medium text-text text-sm truncate">{climb.name}</span>
               {climb.mediaUrl && (
-                <a href={climb.mediaUrl} target="_blank" rel="noopener" class="text-accent-h hover:text-accent transition-colors shrink-0" title="Watch">
+                <a
+                  href={climb.mediaUrl}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-accent-h hover:text-accent transition-colors shrink-0"
+                  title="Watch"
+                  onClick={(e) => { e.preventDefault(); openYoutube(climb.mediaUrl); }}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </a>
               )}
@@ -197,6 +231,32 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
           </button>
         )}
       </div>
+
+      {/* YouTube overlay */}
+      {youtubeInfo && (
+        <div
+          class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setYoutubeInfo(null)}
+        >
+          <div
+            class={`relative w-full ${youtubeInfo.isShorts ? 'max-w-xs' : 'max-w-3xl'}`}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setYoutubeInfo(null)}
+              class="absolute -top-8 right-0 text-white/70 hover:text-white transition-colors text-lg leading-none"
+            >✕</button>
+            <div class={`relative w-full ${youtubeInfo.isShorts ? 'aspect-9/16' : 'aspect-video'}`}>
+              <iframe
+                class="absolute inset-0 w-full h-full rounded-lg"
+                src={`https://www.youtube.com/embed/${youtubeInfo.id}?autoplay=1`}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Info overlay */}
       {infoClimb && (
@@ -223,7 +283,13 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
             )}
             {infoClimb.notes && <p class="text-text text-sm mb-4">{infoClimb.notes}</p>}
             {infoClimb.mediaUrl && (
-              <a href={infoClimb.mediaUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-accent-h text-sm hover:underline">
+              <a
+                href={infoClimb.mediaUrl}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 text-accent-h text-sm hover:underline"
+                onClick={(e) => { e.preventDefault(); setInfoClimb(null); openYoutube(infoClimb.mediaUrl); }}
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 Watch
               </a>
@@ -279,6 +345,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
                   onEdit={() => startEdit(climb)}
                   onDelete={() => remove(climb.id)}
                   onSend={send ? () => send(climb) : undefined}
+                  onWatch={climb.mediaUrl && getYouTubeVideoId(climb.mediaUrl) ? () => openYoutube(climb.mediaUrl) : undefined}
                 />
               )
             )}

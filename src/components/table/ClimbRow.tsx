@@ -7,9 +7,10 @@ interface Props {
   onEdit: () => void;
   onDelete: () => void;
   onSend?: () => void;
+  onWatch?: () => void;
 }
 
-export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete, onSend }: Props) {
+export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete, onSend, onWatch }: Props) {
   const gradeClass = `grade grade--${climb.grade.replace('+', 'plus')}`;
 
   return (
@@ -29,9 +30,13 @@ export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete,
       <td class="td text-muted text-xs max-w-65">{climb.notes}</td>
       <td class="td whitespace-nowrap">
         {climb.mediaUrl && (
-          <a href={climb.mediaUrl} target="_blank" rel="noopener" class="text-accent-h text-xs hover:underline">
-            ▶ View
-          </a>
+          <a
+            href={climb.mediaUrl}
+            target="_blank"
+            rel="noopener"
+            class="text-accent-h text-xs hover:underline"
+            onClick={onWatch ? (e) => { e.preventDefault(); onWatch(); } : undefined}
+          >▶ View</a>
         )}
       </td>
       {isAdmin && (
