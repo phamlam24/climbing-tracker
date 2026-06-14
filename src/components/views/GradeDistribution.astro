@@ -9,9 +9,13 @@ interface Props {
 const { climbs } = Astro.props;
 
 const V_ORDER = ['VB','V0','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','V11','V12','V13','V14','V15','V16','V17'];
+const EXCLUDED = new Set(['VB','V0','V1']);
 
 const counts: Record<string, number> = {};
-for (const c of climbs) counts[c.grade] = (counts[c.grade] ?? 0) + 1;
+for (const c of climbs) {
+  if (EXCLUDED.has(c.grade)) continue;
+  counts[c.grade] = (counts[c.grade] ?? 0) + 1;
+}
 
 const entries = Object.entries(counts).sort(
   ([a], [b]) => V_ORDER.indexOf(a) - V_ORDER.indexOf(b)
