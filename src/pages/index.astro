@@ -10,8 +10,10 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { isAdmin } from '../lib/admin';
+import { LEAD_GRADES, emptyLeadClimb } from '../components/table/types';
 
 const climbs = JSON.parse(await readFile(join(process.cwd(), 'src/data/bouldering.json'), 'utf-8'));
+const leadClimbs = JSON.parse(await readFile(join(process.cwd(), 'src/data/lead.json'), 'utf-8'));
 const projects = JSON.parse(await readFile(join(process.cwd(), 'src/data/projects.json'), 'utf-8'));
 
 const admin = isAdmin(Astro.request);
@@ -39,13 +41,25 @@ const lastClimb = climbs.reduce((max: string, c: { date: string }) => c.date > m
   </div>
 
   <p class="mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
-    Ascents
+    Boulders
   </p>
   <ClimbTable
     client:load
     initialClimbs={climbs}
     isAdmin={admin}
     dataKey="bouldering"
+  />
+
+  <p class="mt-10 mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
+    Rope
+  </p>
+  <ClimbTable
+    client:load
+    initialClimbs={leadClimbs}
+    isAdmin={admin}
+    dataKey="lead"
+    grades={LEAD_GRADES}
+    emptyClimbFn={emptyLeadClimb}
   />
 
   <p class="mt-10 mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
@@ -57,8 +71,6 @@ const lastClimb = climbs.reduce((max: string, c: { date: string }) => c.date > m
     isAdmin={admin}
   />
 
-  <footer class="mt-12 pt-4 border-t border-border text-center text-xs text-overlay">
-    last climb recorded {lastClimb} · website code last updated {lastUpdated} · <a href="https://github.com/phamlam24/climbing-tracker">source / report bugs</a>
-  </footer>
+  <Fragment slot="footer-extra">last climb recorded {lastClimb} · website code last updated {lastUpdated}</Fragment>
 
 </BaseLayout>

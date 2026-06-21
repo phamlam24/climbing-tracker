@@ -5,12 +5,13 @@ import type { Climb } from './types';
 interface Props {
   draft: Climb;
   saving: boolean;
+  grades?: string[];
   onChange: (field: keyof Climb, value: any) => void;
   onSave: () => void;
   onCancel: () => void;
 }
 
-export default function ClimbRowEdit({ draft, saving, onChange, onSave, onCancel }: Props) {
+export default function ClimbRowEdit({ draft, saving, grades = GRADES, onChange, onSave, onCancel }: Props) {
   const set = (field: keyof Climb) => (e: Event) =>
     onChange(field, (e.target as HTMLInputElement | HTMLSelectElement).value);
 
@@ -24,7 +25,7 @@ export default function ClimbRowEdit({ draft, saving, onChange, onSave, onCancel
       </td>
       <td class="td">
         <select value={draft.grade} onChange={set('grade')} class="field w-20">
-          {GRADES.map(g => <option key={g} value={g}>{g}</option>)}
+          {grades.map(g => <option key={g} value={g}>{g}</option>)}
         </select>
       </td>
       <td class="td">

@@ -154,11 +154,106 @@
   background: color-mix(in srgb, var(--grade-color) 30%, transparent);
   color: var(--grade-color);
 }
+/* gm+ */
 .grade--V11, .grade--V12, .grade--V13,
 .grade--V14, .grade--V15, .grade--V16, .grade--V17 {
   --grade-color: var(--color-ctp-red);
   background: color-mix(in srgb, var(--color-black) 18%, transparent);
   color: var(--color-white);
+}
+
+/* ── French lead grade pills ────────────────────────────────── */
+/* 5a–5c: blue */
+.grade--5a, .grade--5b, .grade--5c {
+  --grade-color: var(--color-ctp-blue);
+}
+.grade--5a {
+  background: color-mix(in srgb, var(--grade-color) 10%, transparent);
+  color: var(--grade-color);
+}
+.grade--5b {
+  background: color-mix(in srgb, var(--grade-color) 25%, transparent);
+  color: var(--grade-color);
+}
+.grade--5c {
+  background: color-mix(in srgb, var(--grade-color) 40%, transparent);
+  color: var(--grade-color);
+}
+/* 6a–6b+: red */
+.grade--6a, .grade--6aplus, .grade--6b, .grade--6bplus {
+  --grade-color: var(--color-ctp-red);
+}
+.grade--6a {
+  background: color-mix(in srgb, var(--grade-color) 15%, transparent);
+  color: var(--grade-color);
+}
+.grade--6aplus {
+  background: color-mix(in srgb, var(--grade-color) 25%, transparent);
+  color: var(--grade-color);
+}
+.grade--6b {
+  background: color-mix(in srgb, var(--grade-color) 35%, transparent);
+  color: var(--grade-color);
+}
+.grade--6bplus {
+  background: color-mix(in srgb, var(--grade-color) 45%, transparent);
+  color: var(--grade-color);
+}
+/* 6c–7a: yellow */
+.grade--6c, .grade--6cplus, .grade--7a {
+  --grade-color: var(--color-ctp-yellow);
+}
+.grade--6c {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--6cplus {
+  background: color-mix(in srgb, var(--grade-color) 28%, transparent);
+  color: var(--grade-color);
+}
+.grade--7a {
+  background: color-mix(in srgb, var(--grade-color) 38%, transparent);
+  color: var(--grade-color);
+}
+/* 7a+–7c: peach */
+.grade--7aplus, .grade--7b, .grade--7bplus, .grade--7c {
+  --grade-color: var(--color-ctp-peach);
+}
+.grade--7aplus {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--7b {
+  background: color-mix(in srgb, var(--grade-color) 28%, transparent);
+  color: var(--grade-color);
+}
+.grade--7bplus {
+  background: color-mix(in srgb, var(--grade-color) 38%, transparent);
+  color: var(--grade-color);
+}
+.grade--7c {
+  background: color-mix(in srgb, var(--grade-color) 48%, transparent);
+  color: var(--grade-color);
+}
+/* 7c+–8b: mauve */
+.grade--7cplus, .grade--8a, .grade--8aplus, .grade--8b {
+  --grade-color: var(--color-ctp-mauve);
+}
+.grade--7cplus {
+  background: color-mix(in srgb, var(--grade-color) 18%, transparent);
+  color: var(--grade-color);
+}
+.grade--8a {
+  background: color-mix(in srgb, var(--grade-color) 28%, transparent);
+  color: var(--grade-color);
+}
+.grade--8aplus {
+  background: color-mix(in srgb, var(--grade-color) 38%, transparent);
+  color: var(--grade-color);
+}
+.grade--8b {
+  background: color-mix(in srgb, var(--grade-color) 48%, transparent);
+  color: var(--grade-color);
 }
 
 /* ── Save error ─────────────────────────────────────────────── */

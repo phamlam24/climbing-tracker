@@ -8,6 +8,8 @@ interface Props {
   initialClimbs: Climb[];
   isAdmin: boolean;
   dataKey: string;
+  grades?: string[];
+  emptyClimbFn?: () => Climb;
   onSendClimb?: (climb: Climb) => Promise<void>;
 }
 
@@ -23,7 +25,7 @@ function cycleDir(current: SortDir | null): SortDir | null {
   return null;
 }
 
-function applySorts(climbs: Climb[], sorts: SortEntry[]): Climb[] {
+function applySorts(climbs: Climb[], sorts: SortEntry[], gradeList: string[]): Climb[] {
   if (!sorts.length) return climbs;
   return [...climbs].sort((a, b) => {
     for (const { key, dir } of sorts) {
@@ -31,7 +33,7 @@ function applySorts(climbs: Climb[], sorts: SortEntry[]): Climb[] {
       if (key === 'date') {
         cmp = a.date.localeCompare(b.date);
       } else if (key === 'grade') {
-        cmp = GRADES.indexOf(a.grade) - GRADES.indexOf(b.grade);
+        cmp = gradeList.indexOf(a.grade) - gradeList.indexOf(b.grade);
       }
       if (cmp !== 0) return dir === 'desc' ? -cmp : cmp;
     }
@@ -83,7 +85,7 @@ function getYouTubeVideoId(url: string): { id: string; isShorts: boolean } | nul
 }
 
 // ── Main component ────────────────────────────────────────────
-export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClimb }: Props) {
+export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = GRADES, emptyClimbFn = emptyClimb, onSendClimb }: Props) {
   const [climbs, setClimbs] = useState<Climb[]>(initialClimbs);
   // Ordered list of active sorts — first entry is primary
   const [sorts, setSorts] = useState<SortEntry[]>([{key: 'grade', dir: 'desc'}, {key: 'date', dir: 'desc'}]);
@@ -114,7 +116,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
   };
 
   const startNew = () => {
-    const c = emptyClimb();
+    const c = emptyClimbFn();
     setDraft(c);
     setEditingId(c.id);
     setIsNew(true);
@@ -183,7 +185,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
     else window.open(url, '_blank', 'noopener');
   };
 
-  const sorted = applySorts(climbs, sorts);
+  const sorted = applySorts(climbs, sorts, grades);
   const visible = collapsed ? sorted.filter(c => !isNoise(c) && !!c.mediaUrl) : sorted;
   const hiddenCount = sorted.length - sorted.filter(c => !isNoise(c) && !!c.mediaUrl).length;
   const dirOf = (key: SortKey) => sorts.find(s => s.key === key)?.dir ?? null;
@@ -332,6 +334,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
                   key={climb.id}
                   draft={draft}
                   saving={saving}
+                  grades={grades}
                   onChange={setField}
                   onSave={commit}
                   onCancel={cancel}
@@ -355,6 +358,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, onSendClim
                 key="__new__"
                 draft={draft}
                 saving={saving}
+                grades={grades}
                 onChange={setField}
                 onSave={commit}
                 onCancel={cancel}

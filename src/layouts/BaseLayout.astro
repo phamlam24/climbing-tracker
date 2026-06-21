@@ -30,10 +30,14 @@ const admin = isAdmin(Astro.request);
           </span>
         )}
       </h1>
-      <p class="mt-1 text-sm text-muted">Personal bouldering log</p>
+      <p class="mt-1 text-sm text-muted">Tailored and over-engineered log for a V2 climber</p>
     </header>
 
     <slot />
+
+    <footer class="mt-12 pt-4 border-t border-border text-center text-xs text-overlay">
+      <slot name="footer-extra" />{Astro.slots.has('footer-extra') ? ' · ' : ''}<a href="https://github.com/phamlam24/climbing-tracker" class="hover:text-muted transition-colors">source / report bugs</a>
+    </footer>
 
   </div>
 </body>
