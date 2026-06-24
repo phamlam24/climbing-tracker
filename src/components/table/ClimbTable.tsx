@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import ClimbRow from './ClimbRow';
 import ClimbRowEdit from './ClimbRowEdit';
-import { emptyClimb, GRADES } from './types';
+import { GRADES } from './types';
 import type { Climb } from './types';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   isAdmin: boolean;
   dataKey: string;
   grades?: string[];
-  emptyClimbFn?: () => Climb;
+  defaultGrade?: string;
   onSendClimb?: (climb: Climb) => Promise<void>;
 }
 
@@ -85,7 +85,16 @@ function getYouTubeVideoId(url: string): { id: string; isShorts: boolean } | nul
 }
 
 // ── Main component ────────────────────────────────────────────
-export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = GRADES, emptyClimbFn = emptyClimb, onSendClimb }: Props) {
+export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = GRADES, defaultGrade, onSendClimb }: Props) {
+  const emptyClimbFn = () => ({
+    id: crypto.randomUUID(),
+    name: '',
+    grade: defaultGrade ?? grades[0] ?? 'V0',
+    tags: [] as string[],
+    mediaUrl: '',
+    notes: '',
+    date: new Date().toISOString().slice(0, 10),
+  });
   const [climbs, setClimbs] = useState<Climb[]>(initialClimbs);
   // Ordered list of active sorts — first entry is primary
   const [sorts, setSorts] = useState<SortEntry[]>([{key: 'grade', dir: 'desc'}, {key: 'date', dir: 'desc'}]);
