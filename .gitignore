@@ -23,3 +23,6 @@ Thumbs.db
 *.swp
 *.swo
 .vercel
+
+# Careful about AI docs - some might expose critical info for attacks
+docs/

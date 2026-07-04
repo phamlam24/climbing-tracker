@@ -11,6 +11,8 @@ A personal climbing log website. The public sees a read-only table and stat view
 
 Built with **Astro (SSR, server output)** + **Preact islands** + **Tailwind CSS v4** + **Catppuccin Macchiato** theme. Data is plain JSON files on disk — no database, no auth system.
 
+Project is served on a weak self-host machine - check `docs/HOSTING.md` for more info
+
 ## Running the app
 
 ```
