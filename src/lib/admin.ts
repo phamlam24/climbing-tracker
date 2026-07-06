@@ -1,13 +1,10 @@
-export function isAdmin(request: Request): boolean {
+import type { AstroCookies } from 'astro';
+import { verifyAccessToken } from './verifyAccessToken';
+
+export async function isAdmin(request: Request, cookies: AstroCookies): Promise<boolean> {
   const url = new URL(request.url);
-  const token = url.searchParams.get('admin');
-  const secret = import.meta.env.ADMIN_TOKEN;
-
-  const isLocalhost =
-    url.hostname === 'localhost' || url.hostname === '127.0.0.1';
-
+  const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
   if (isLocalhost) return true;
-  if (secret && token === secret) return true;
 
-  return false;
+  return verifyAccessToken(cookies.get('access_token')?.value);
 }

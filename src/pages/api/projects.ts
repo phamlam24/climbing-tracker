@@ -5,8 +5,8 @@ import { isAdmin } from '../../lib/admin';
 
 const dataPath = join(process.cwd(), 'src/data/projects.json');
 
-export const POST: APIRoute = async ({ request }) => {
-  if (!isAdmin(request)) {
+export const POST: APIRoute = async ({ request, cookies }) => {
+  if (!(await isAdmin(request, cookies))) {
     return new Response('Forbidden', { status: 403 });
   }
 

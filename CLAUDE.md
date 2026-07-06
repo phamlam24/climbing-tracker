@@ -1,5 +1,7 @@
 # Climbing Tracker — Claude Code context
 
+See [`../CLAUDE.md`](../CLAUDE.md) for cross-app architecture (shared Postgres, shared auth service, deploy pattern) and [`../docs/HOSTING.md`](../docs/HOSTING.md) for server/infra details. This file only covers things specific to this app's code.
+
 ## Coding style
 
 - **No one-off CSS**: don't hand-write one-off styles for something a library or plugin already handles well (e.g. typography, animations). Install the proper tool instead.
@@ -7,11 +9,9 @@
 
 ## What this is
 
-A personal climbing log website. The public sees a read-only table and stat views. The owner (you) gets inline editing controls when browsing on localhost or with a secret URL token.
+A personal climbing log website. The public sees a read-only table and stat views. The owner (you) gets inline editing controls when browsing on localhost or logged in via the shared auth service.
 
-Built with **Astro (SSR, server output)** + **Preact islands** + **Tailwind CSS v4** + **Catppuccin Macchiato** theme. Data is plain JSON files on disk — no database, no auth system.
-
-Project is served on a weak self-host machine - check `docs/HOSTING.md` for more info
+Built with **Astro (SSR, server output)** + **Preact islands** + **Tailwind CSS v4** + **Catppuccin Macchiato** theme. Data lives in Postgres (see `db/`).
 
 ## Running the app
 
@@ -23,20 +23,41 @@ npm run preview
 
 ## Admin mode
 
-- **Localhost**: always admin, no token needed.
-- **Deployed**: visit `/?admin=<ADMIN_TOKEN>` where the token is set in `.env`.
-- `.env.example` shows the required variable. `.env` is gitignored.
-- Logic lives in `src/lib/admin.ts` — `isAdmin(request)` is called at the top of every page that needs it.
+This app's concrete implementation of the shared auth pattern described in `../CLAUDE.md`:
+
+- **Localhost**: always admin, no login needed.
+- **Deployed**: log in at `auth.lampham.space`. This sets an `access_token`/`refresh_token` cookie pair scoped to `.lampham.space`.
+- `src/lib/verifyAccessToken.ts` — shared local JWT verification against `JWT_SECRET` (no DB/network call on the common path); throws at startup if `JWT_SECRET` is unset, so misconfiguration fails loudly instead of silently locking out admin.
+- `src/lib/admin.ts` — `isAdmin(request, cookies)` uses the above, plus the localhost bypass.
+- `src/middleware.ts` — if the access token is expired but a `refresh_token` cookie is present, makes one server-to-server call to `auth.lampham.space/refresh` to mint (and re-cookie) a new access *and* refresh token pair — both must be re-set, since the auth service rotates/revokes the old refresh token on every use. Otherwise proceeds as anonymous (there's no admin-only-to-*view* page today, so no login redirect is needed).
+- `BaseLayout.astro` renders a "Log in"/"Log out" link pointing at the auth service, with `?redirect=` back to the current page.
+- `.env.example` shows the required variables (`JWT_SECRET` must match `server-auth`'s). `.env` is gitignored.
 
 ## Project structure
 
 ```
+db/
+  client.mjs                # shared pg.Pool, reads DATABASE_URL
+  migrate.mjs                # tiny migration runner (schema_migrations table)
+  migrations/                # numbered .sql files, applied in order
+  import-bouldering.mjs      # one-off: seeds Postgres from src/data/bouldering.json
+
 src/
   data/
-    bouldering.json          # climb records — source of truth, edited via UI or directly
+    bouldering.json          # legacy — Postgres (climbing.bouldering) is the source of truth now,
+                              # kept only as a cold-storage rollback reference, not read/written by the app
+    lead.json                 # still JSON-backed — not yet migrated (fast-follow)
+    projects.json              # still JSON-backed — not yet migrated (fast-follow)
 
   lib/
-    admin.ts                 # isAdmin() helper
+    admin.ts                 # isAdmin(request, cookies) — JWT cookie check, localhost bypass
+    verifyAccessToken.ts       # shared JWT verification (used by admin.ts and middleware.ts)
+    authOrigin.ts              # AUTH_ORIGIN constant (shared auth service URL)
+    db/
+      bouldering.ts            # getAllBoulderingClimbs() — the one place the SELECT lives
+
+  middleware.ts               # global Astro middleware — silently refreshes an expired
+                               # access token via the auth service when a refresh token is present
 
   components/
     table/
@@ -52,7 +73,9 @@ src/
   pages/
     index.astro              # main page — wires everything together, imports styles
     api/
-      bouldering.ts          # POST /api/bouldering — writes the JSON file back to disk
+      bouldering.ts          # GET/POST /api/bouldering — reads/writes climbing.bouldering in Postgres
+      lead.ts                 # GET/POST /api/lead — still reads/writes src/data/lead.json
+      projects.ts              # POST /api/projects — still reads/writes src/data/projects.json
 
   styles/
     global.css               # Tailwind v4 entry point + full theme + grade pill CSS
@@ -113,10 +136,8 @@ Views are Astro components in `src/components/views/`. They receive `climbs: Cli
 
 ## Adding a second table (e.g. sport routes)
 
-1. Create `src/data/routes.json` with the same schema (or a new one).
-2. Duplicate `src/pages/api/bouldering.ts` → `src/pages/api/routes.ts`, update the `dataPath`.
-3. Import the data and drop `<ClimbTable dataKey="routes" ... />` on any page.
-4. If you need different columns, extend `types.ts` and the row components.
+- **JSON-backed (quick, like `lead.ts`/`projects.ts`)**: create `src/data/routes.json`, duplicate `src/pages/api/lead.ts` → `src/pages/api/routes.ts` and update the `dataPath`, import the data and drop `<ClimbTable dataKey="routes" ... />` on any page. Extend `types.ts` and the row components if you need different columns.
+- **Postgres-backed (like `bouldering`)**: add a migration in `db/migrations/`, a `getAllX()` helper in `src/lib/db/`, and a route following `src/pages/api/bouldering.ts`'s pattern (GET selects, POST does a transactional delete+re-insert of the whole array).
 
 ## To change the color theme
 

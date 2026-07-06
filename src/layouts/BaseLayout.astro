@@ -1,13 +1,19 @@
 ---
 import '../styles/global.css';
 import { isAdmin } from '../lib/admin';
+import { AUTH_ORIGIN } from '../lib/authOrigin';
 
 interface Props {
   title?: string;
 }
 
 const { title = 'Climbing Tracker' } = Astro.props;
-const admin = isAdmin(Astro.request);
+const admin = await isAdmin(Astro.request, Astro.cookies);
+
+const isLocalhost = Astro.url.hostname === 'localhost' || Astro.url.hostname === '127.0.0.1';
+const redirect = encodeURIComponent(Astro.url.href);
+const loginUrl = `${AUTH_ORIGIN}/login?redirect=${redirect}`;
+const logoutUrl = `${AUTH_ORIGIN}/logout?redirect=${redirect}`;
 ---
 
 <!doctype html>
@@ -28,6 +34,14 @@ const admin = isAdmin(Astro.request);
           <span class="text-[0.65rem] font-bold uppercase tracking-widest bg-accent text-mantle px-2 py-0.5 rounded">
             Admin
           </span>
+        )}
+        {!isLocalhost && (
+          <a
+            href={admin ? logoutUrl : loginUrl}
+            class="text-xs font-medium text-muted hover:text-accent-h transition-colors"
+          >
+            {admin ? 'Log out' : 'Log in'}
+          </a>
         )}
       </h1>
       <p class="mt-1 text-sm text-muted">Tailored and over-engineered log for a V2 climber</p>

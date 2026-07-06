@@ -10,8 +10,8 @@ export const GET: APIRoute = async () => {
   return new Response(data, { headers: { 'Content-Type': 'application/json' } });
 };
 
-export const POST: APIRoute = async ({ request }) => {
-  if (!isAdmin(request)) {
+export const POST: APIRoute = async ({ request, cookies }) => {
+  if (!(await isAdmin(request, cookies))) {
     return new Response('Forbidden', { status: 403 });
   }
 
