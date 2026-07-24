@@ -23,7 +23,7 @@ const lastClimb = climbs.reduce((max: string, c: { date: string }) => c.date > m
 
   <!-- Mobile layout (< md) -->
   <div class="md:hidden flex flex-col gap-4 mb-8">
-    <V3PlusProgress climbs={climbs} goal={10} />
+    <V3PlusProgress climbs={climbs} goal={25} />
     <PracticeGoals class="w-full" />
     <a href="/blog" class="text-accent hover:text-accent-h text-sm font-medium transition-colors">
       → Gym Reviews
@@ -32,7 +32,7 @@ const lastClimb = climbs.reduce((max: string, c: { date: string }) => c.date > m
 
   <!-- Desktop layout (≥ md) -->
   <div class="hidden md:flex flex-wrap gap-4 mb-10">
-    <V3PlusProgress climbs={climbs} goal={10} />
+    <V3PlusProgress climbs={climbs} goal={25} />
     <GradeDistribution climbs={climbs} />
     <PracticeGoals />
     <GymReviews />

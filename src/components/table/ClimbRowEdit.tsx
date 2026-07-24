@@ -13,7 +13,7 @@ interface Props {
 
 export default function ClimbRowEdit({ draft, saving, grades = GRADES, onChange, onSave, onCancel }: Props) {
   const set = (field: keyof Climb) => (e: Event) =>
-    onChange(field, (e.target as HTMLInputElement | HTMLSelectElement).value);
+    onChange(field, (e.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement).value);
 
   return (
     <tr class="border-b border-border last:border-0 bg-surface">
@@ -32,7 +32,7 @@ export default function ClimbRowEdit({ draft, saving, grades = GRADES, onChange,
         <TagInput value={draft.tags} onChange={tags => onChange('tags', tags)} />
       </td>
       <td class="td">
-        <input value={draft.notes} onInput={set('notes')} placeholder="Notes" class="field w-full" />
+        <textarea value={draft.notes} onInput={set('notes')} placeholder="Notes" rows={3} class="field w-full resize-y" />
       </td>
       <td class="td">
         <input value={draft.mediaUrl} onInput={set('mediaUrl')} placeholder="https://…" class="field w-full" />
