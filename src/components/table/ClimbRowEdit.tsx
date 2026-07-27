@@ -21,7 +21,15 @@ export default function ClimbRowEdit({ draft, saving, grades = GRADES, onChange,
         <input type="date" value={draft.date} onInput={set('date')} class="field w-36" />
       </td>
       <td class="td">
-        <input value={draft.name} onInput={set('name')} placeholder="Name" class="field w-full" />
+        <div class="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => onChange('favorite', !draft.favorite)}
+            class={`shrink-0 transition-colors ${draft.favorite ? 'text-favorite' : 'text-overlay hover:text-favorite'}`}
+            title={draft.favorite ? 'Unfavorite' : 'Favorite'}
+          >★</button>
+          <input value={draft.name} onInput={set('name')} placeholder="Name" class="field w-full" />
+        </div>
       </td>
       <td class="td">
         <select value={draft.grade} onChange={set('grade')} class="field w-20">

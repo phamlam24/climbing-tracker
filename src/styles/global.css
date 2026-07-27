@@ -29,6 +29,7 @@
   --color-accent-h: var(--color-ctp-teal);       /* #8bd5ca — hover / secondary */
   --color-danger:   var(--color-ctp-red);        /* #ed8796 — delete / errors */
   --color-warn:     var(--color-ctp-peach);      /* #f5a97f — mid-grade warning */
+  --color-favorite: var(--color-ctp-yellow);     /* #eed49f — favorite star */
 
   --font-sans: 'Inter', system-ui, sans-serif;
 }

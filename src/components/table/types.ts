@@ -6,6 +6,7 @@ export interface Climb {
   mediaUrl: string;
   notes: string;
   date: string;
+  favorite: boolean;
 }
 
 export const GRADES = [
@@ -39,6 +40,7 @@ export function emptyClimb(): Climb {
     mediaUrl: '',
     notes: '',
     date: new Date().toISOString().slice(0, 10),
+    favorite: false,
   };
 }
 
@@ -51,5 +53,6 @@ export function emptyLeadClimb(): Climb {
     mediaUrl: '',
     notes: '',
     date: new Date().toISOString().slice(0, 10),
+    favorite: false,
   };
 }

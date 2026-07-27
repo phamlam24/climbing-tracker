@@ -38,9 +38,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     await client.query('DELETE FROM climbing.bouldering');
     for (const c of climbs) {
       await client.query(
-        `INSERT INTO climbing.bouldering (id, name, grade, tags, media_url, notes, date)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [c.id, c.name, c.grade, c.tags, c.mediaUrl, c.notes, c.date]
+        `INSERT INTO climbing.bouldering (id, name, grade, tags, media_url, notes, date, favorite)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [c.id, c.name, c.grade, c.tags, c.mediaUrl, c.notes, c.date, !!c.favorite]
       );
     }
     await client.query('COMMIT');

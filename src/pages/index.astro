@@ -5,15 +5,14 @@ import V3PlusProgress from '../components/views/V3PlusProgress.astro';
 import GradeDistribution from '../components/views/GradeDistribution.astro';
 import PracticeGoals from '../components/views/PracticeGoals.astro';
 import GymReviews from '../components/views/GymReviews.astro';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { isAdmin } from '../lib/admin';
 import { getAllBoulderingClimbs } from '../lib/db/bouldering';
+import { getAllLeadClimbs } from '../lib/db/lead';
 import { LEAD_GRADES } from '../components/table/types';
 
 const climbs = await getAllBoulderingClimbs();
-const leadClimbs = JSON.parse(await readFile(join(process.cwd(), 'src/data/lead.json'), 'utf-8'));
+const leadClimbs = await getAllLeadClimbs();
 const admin = await isAdmin(Astro.request, Astro.cookies);
 const lastUpdated = execSync('git log -1 --format=%cd --date=short').toString().trim();
 const lastClimb = climbs.reduce((max: string, c: { date: string }) => c.date > max ? c.date : max, '');

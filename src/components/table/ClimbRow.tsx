@@ -8,15 +8,30 @@ interface Props {
   onDelete: () => void;
   onSend?: () => void;
   onWatch?: () => void;
+  onToggleFavorite?: () => void;
 }
 
-export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete, onSend, onWatch }: Props) {
+export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete, onSend, onWatch, onToggleFavorite }: Props) {
   const gradeClass = `grade grade--${climb.grade.replace('+', 'plus')}`;
 
   return (
     <tr class="border-b border-border last:border-0 hover:bg-surface transition-colors">
       <td class="td text-muted text-xs whitespace-nowrap">{climb.date}</td>
-      <td class="td font-medium text-text">{climb.name}</td>
+      <td class="td font-medium text-text">
+        <span class="inline-flex items-center gap-1.5">
+          {isAdmin ? (
+            <button
+              onClick={onToggleFavorite}
+              disabled={editingAny}
+              class={`shrink-0 transition-colors disabled:opacity-35 disabled:cursor-not-allowed ${climb.favorite ? 'text-favorite' : 'text-overlay hover:text-favorite'}`}
+              title={climb.favorite ? 'Unfavorite' : 'Favorite'}
+            >★</button>
+          ) : climb.favorite ? (
+            <span class="shrink-0 text-favorite" title="Favorite">★</span>
+          ) : null}
+          {climb.name}
+        </span>
+      </td>
       <td class="td"><span class={gradeClass}>{climb.grade}</span></td>
       <td class="td">
         <div class="flex flex-wrap gap-1">

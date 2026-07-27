@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import ClimbRow from './ClimbRow';
 import ClimbRowEdit from './ClimbRowEdit';
 import { GRADES } from './types';
@@ -25,9 +25,10 @@ function cycleDir(current: SortDir | null): SortDir | null {
   return null;
 }
 
+// Favorites always sort first, ahead of whatever column sort is active.
 function applySorts(climbs: Climb[], sorts: SortEntry[], gradeList: string[]): Climb[] {
-  if (!sorts.length) return climbs;
   return [...climbs].sort((a, b) => {
+    if (!!a.favorite !== !!b.favorite) return a.favorite ? -1 : 1;
     for (const { key, dir } of sorts) {
       let cmp = 0;
       if (key === 'date') {
@@ -94,6 +95,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
     mediaUrl: '',
     notes: '',
     date: new Date().toISOString().slice(0, 10),
+    favorite: false,
   });
   const [climbs, setClimbs] = useState<Climb[]>(initialClimbs);
   // Ordered list of active sorts — first entry is primary
@@ -106,6 +108,8 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
   const [collapsed, setCollapsed] = useState(true);
   const [infoClimb, setInfoClimb] = useState<Climb | null>(null);
   const [youtubeInfo, setYoutubeInfo] = useState<{ id: string; isShorts: boolean } | null>(null);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 20;
 
   const clickSort = (key: SortKey) => {
     setSorts(prev => {
@@ -172,6 +176,11 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
     await persist(climbs.filter(c => c.id !== id));
   };
 
+  const toggleFavorite = (climb: Climb) => {
+    const next = climbs.map(c => (c.id === climb.id ? { ...c, favorite: !c.favorite } : c));
+    persist(next);
+  };
+
   const send = onSendClimb
     ? async (climb: Climb) => {
         try {
@@ -199,17 +208,54 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
   const hiddenCount = sorted.length - sorted.filter(c => !isNoise(c) && !!c.mediaUrl).length;
   const dirOf = (key: SortKey) => sorts.find(s => s.key === key)?.dir ?? null;
 
+  const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paged = visible.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  useEffect(() => {
+    setPage(1);
+  }, [sorts, collapsed]);
+
+  const Pagination = () => totalPages > 1 ? (
+    <div class="flex items-center justify-center gap-3 mt-3 text-xs">
+      <button
+        class="px-2 py-1 rounded font-semibold text-muted hover:text-text transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+        onClick={() => setPage(p => Math.max(1, p - 1))}
+        disabled={currentPage === 1}
+      >
+        ← Prev
+      </button>
+      <span class="text-overlay">Page {currentPage} of {totalPages}</span>
+      <button
+        class="px-2 py-1 rounded font-semibold text-muted hover:text-text transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+        disabled={currentPage === totalPages}
+      >
+        Next →
+      </button>
+    </div>
+  ) : null;
+
   return (
     <div>
       {saveError && <p class="save-error">{saveError}</p>}
 
       {/* Mobile card list */}
       <div class="md:hidden flex flex-col gap-2">
-        {visible.map(climb => {
+        {paged.map(climb => {
           const gradeClass = `grade grade--${climb.grade.replace('+', 'plus')}`;
           return (
             <div key={climb.id} class="flex items-center gap-3 bg-surface border border-border rounded-lg px-4 py-3">
               <span class={gradeClass}>{climb.grade}</span>
+              {isAdmin ? (
+                <button
+                  onClick={() => toggleFavorite(climb)}
+                  class={`shrink-0 transition-colors ${climb.favorite ? 'text-favorite' : 'text-overlay hover:text-favorite'}`}
+                  title={climb.favorite ? 'Unfavorite' : 'Favorite'}
+                >★</button>
+              ) : climb.favorite ? (
+                <span class="shrink-0 text-favorite" title="Favorite">★</span>
+              ) : null}
               <span class="flex-1 font-medium text-text text-sm truncate">{climb.name}</span>
               {climb.mediaUrl && (
                 <a
@@ -241,6 +287,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
             {collapsed ? `Show all (${hiddenCount} hidden)` : 'Show filtered'}
           </button>
         )}
+        <Pagination />
       </div>
 
       {/* YouTube overlay */}
@@ -337,7 +384,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
             </tr>
           </thead>
           <tbody>
-            {visible.map(climb =>
+            {paged.map(climb =>
               editingId === climb.id && !isNew && draft ? (
                 <ClimbRowEdit
                   key={climb.id}
@@ -358,6 +405,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
                   onDelete={() => remove(climb.id)}
                   onSend={send ? () => send(climb) : undefined}
                   onWatch={climb.mediaUrl && getYouTubeVideoId(climb.mediaUrl) ? () => openYoutube(climb.mediaUrl) : undefined}
+                  onToggleFavorite={() => toggleFavorite(climb)}
                 />
               )
             )}
@@ -375,6 +423,9 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
             )}
           </tbody>
         </table>
+      </div>
+      <div class="hidden md:block">
+        <Pagination />
       </div>
 
       {isAdmin && !editingId && (
