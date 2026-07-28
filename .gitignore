@@ -24,5 +24,8 @@ Thumbs.db
 *.swo
 .vercel
 
+# Local Claude Code permissions (machine-specific)
+.claude/settings.local.json
+
 # Careful about AI docs - some might expose critical info for attacks
 docs/
