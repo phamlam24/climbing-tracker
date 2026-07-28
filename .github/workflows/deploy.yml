@@ -27,7 +27,8 @@ jobs:
         run: |
           ssh lpham@ssh.lampham.space "
             cd /var/www/climbing.lampham.space &&
-            git pull &&
+            git fetch origin main &&
+            git reset --hard origin/main &&
             printf 'DATABASE_URL=%s\nJWT_SECRET=%s\n' '${{ secrets.DATABASE_URL }}' '${{ secrets.JWT_SECRET }}' > .env &&
             npm ci --legacy-peer-deps &&
             npm run migrate &&
