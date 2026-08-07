@@ -1,0 +1,22 @@
+---
+import { AUTH_ORIGIN } from '../lib/authOrigin';
+
+interface Props {
+  loggedIn?: boolean;
+}
+
+const { loggedIn = false } = Astro.props;
+const redirect = encodeURIComponent(Astro.url.href);
+const logoutUrl = `${AUTH_ORIGIN}/logout?redirect=${redirect}`;
+const hasExtra = Astro.slots.has('default');
+---
+
+<footer class="mt-12 pt-4 border-t border-border text-center text-xs text-overlay flex flex-wrap justify-center gap-x-2 gap-y-1">
+  {hasExtra && <><slot />{' · '}</>}
+  <a href="https://lampham.space" class="hover:text-muted transition-colors">home</a>
+  <a href="https://lampham.space/apps" class="hover:text-muted transition-colors">apps</a>
+  <a href="https://github.com/phamlam24" class="hover:text-muted transition-colors">github</a>
+  <a href="https://status.lampham.space" class="hover:text-muted transition-colors">status</a>
+  <span>&copy; {new Date().getFullYear()} Lam Pham</span>
+  {loggedIn && <a href={logoutUrl} class="hover:text-muted transition-colors">Log out</a>}
+</footer>

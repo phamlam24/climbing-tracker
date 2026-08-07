@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { isAdmin } from '../lib/admin';
 import { AUTH_ORIGIN } from '../lib/authOrigin';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -49,9 +50,9 @@ const logoutUrl = `${AUTH_ORIGIN}/logout?redirect=${redirect}`;
 
     <slot />
 
-    <footer class="mt-12 pt-4 border-t border-border text-center text-xs text-overlay">
-      <slot name="footer-extra" />{Astro.slots.has('footer-extra') ? ' · ' : ''}<a href="https://github.com/phamlam24/climbing-tracker" class="hover:text-muted transition-colors">source / report bugs</a>
-    </footer>
+    <Footer loggedIn={admin}>
+      <slot name="footer-extra" />
+    </Footer>
 
   </div>
 </body>

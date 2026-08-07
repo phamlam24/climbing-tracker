@@ -2,6 +2,8 @@
 
 See [`../CLAUDE.md`](../CLAUDE.md) for cross-app architecture (shared Postgres, shared auth service, deploy pattern) and [`../docs/HOSTING.md`](../docs/HOSTING.md) for server/infra details. This file only covers things specific to this app's code.
 
+Worktrees are allowed (see `../CLAUDE.md`'s Git workflow section) — edit directly in this checkout for most changes, use one when isolation actually helps.
+
 ## Coding style
 
 - **No one-off CSS**: don't hand-write one-off styles for something a library or plugin already handles well (e.g. typography, animations). Install the proper tool instead.
@@ -60,6 +62,8 @@ src/
                                # access token via the auth service when a refresh token is present
 
   components/
+    Footer.astro                # shared footer pattern (home/apps nav, github, status, copyright,
+                                  # log out) — same component duplicated per-app, see root CLAUDE.md
     table/
       types.ts               # Climb interface, GRADES array, PRESET_TAGS, emptyClimb()
       ClimbTable.tsx          # Preact island — state orchestrator (sort, edit, persist)
