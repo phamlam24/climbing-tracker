@@ -57,6 +57,8 @@ src/
     admin.ts                 # isAdmin(request, cookies) — JWT cookie check, localhost bypass
     verifyAccessToken.ts       # shared JWT verification (used by admin.ts and middleware.ts)
     authOrigin.ts              # AUTH_ORIGIN constant (shared auth service URL)
+    events.ts                  # emitEvent(client, type, payload) — inserts into events.events,
+                                # see ../docs/EVENTS.md
     db/
       bouldering.ts            # getAllBoulderingClimbs() — the one place the SELECT lives
 
@@ -79,7 +81,9 @@ src/
   pages/
     index.astro              # main page — wires everything together, imports styles
     api/
-      bouldering.ts          # GET/POST /api/bouldering — reads/writes climbing.bouldering in Postgres
+      bouldering.ts          # GET/POST /api/bouldering — reads/writes climbing.bouldering in Postgres;
+                              # POST also emits a climbing.climb_created event (see ../docs/EVENTS.md)
+                              # for any id in the posted array that wasn't already in the table
       lead.ts                 # GET/POST /api/lead — still reads/writes src/data/lead.json
       projects.ts              # POST /api/projects — still reads/writes src/data/projects.json
 

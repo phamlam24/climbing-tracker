@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { isAdmin } from '../../lib/admin';
 import { getAllBoulderingClimbs } from '../../lib/db/bouldering';
 import { pool } from '../../../db/client.mjs';
+import { emitEvent } from '../../lib/events';
 import type { Climb } from '../../components/table/types';
 
 export const GET: APIRoute = async () => {
@@ -35,6 +36,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
+    const { rows: existingRows } = await client.query('SELECT id FROM climbing.bouldering');
+    const existingIds = new Set(existingRows.map((r) => r.id));
+
     await client.query('DELETE FROM climbing.bouldering');
     for (const c of climbs) {
       await client.query(
@@ -42,6 +46,17 @@ export const POST: APIRoute = async ({ request, cookies }) => {
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [c.id, c.name, c.grade, c.tags, c.mediaUrl, c.notes, c.date, !!c.favorite]
       );
+      if (!existingIds.has(c.id)) {
+        await emitEvent(client, 'climbing.climb_created', {
+          id: c.id,
+          name: c.name,
+          grade: c.grade,
+          tags: c.tags,
+          mediaUrl: c.mediaUrl,
+          notes: c.notes,
+          date: c.date
+        });
+      }
     }
     await client.query('COMMIT');
   } catch (e) {
