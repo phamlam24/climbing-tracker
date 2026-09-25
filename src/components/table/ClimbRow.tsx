@@ -23,7 +23,7 @@ export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete,
             <button
               onClick={onToggleFavorite}
               disabled={editingAny}
-              class={`shrink-0 transition-colors disabled:opacity-35 disabled:cursor-not-allowed ${climb.favorite ? 'text-favorite' : 'text-overlay hover:text-favorite'}`}
+              class={`shrink-0 transition-colors disabled:opacity-35 disabled:cursor-not-allowed ${climb.favorite ? 'text-favorite drop-shadow-[0_0_6px_color-mix(in_oklab,var(--color-favorite)_45%,transparent)]' : 'text-surface3 hover:text-favorite'}`}
               title={climb.favorite ? 'Unfavorite' : 'Favorite'}
             >★</button>
           ) : climb.favorite ? (

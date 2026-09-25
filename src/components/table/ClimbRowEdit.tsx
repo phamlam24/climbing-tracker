@@ -25,7 +25,7 @@ export default function ClimbRowEdit({ draft, saving, grades = GRADES, onChange,
           <button
             type="button"
             onClick={() => onChange('favorite', !draft.favorite)}
-            class={`shrink-0 transition-colors ${draft.favorite ? 'text-favorite' : 'text-overlay hover:text-favorite'}`}
+            class={`shrink-0 transition-colors ${draft.favorite ? 'text-favorite drop-shadow-[0_0_6px_color-mix(in_oklab,var(--color-favorite)_45%,transparent)]' : 'text-surface3 hover:text-favorite'}`}
             title={draft.favorite ? 'Unfavorite' : 'Favorite'}
           >★</button>
           <input value={draft.name} onInput={set('name')} placeholder="Name" class="field w-full" />

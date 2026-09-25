@@ -10,6 +10,10 @@
     data colours, not UI accents, so they live here, not in design/.
 */
 
+@theme {
+  --color-favorite: var(--color-ctp-yellow);  /* starred climbs */
+}
+
 @layer base {
   select option {
     background: var(--color-surface2);
