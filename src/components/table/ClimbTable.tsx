@@ -245,7 +245,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
         {paged.map(climb => {
           const gradeClass = `grade grade--${climb.grade.replace('+', 'plus')}`;
           return (
-            <div key={climb.id} class="flex items-center gap-3 bg-surface border border-border rounded-lg px-4 py-3">
+            <div key={climb.id} class="flex items-center gap-3 bg-surface border border-border rounded-card px-4 py-3">
               <span class={gradeClass}>{climb.grade}</span>
               {isAdmin ? (
                 <button
@@ -306,7 +306,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
             >✕</button>
             <div class={`relative w-full ${youtubeInfo.isShorts ? 'aspect-9/16' : 'aspect-video'}`}>
               <iframe
-                class="absolute inset-0 w-full h-full rounded-lg"
+                class="absolute inset-0 w-full h-full rounded-card"
                 src={`https://www.youtube.com/embed/${youtubeInfo.id}?autoplay=1`}
                 allow="autoplay; encrypted-media; picture-in-picture"
                 allowFullScreen
@@ -323,7 +323,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
           onClick={() => setInfoClimb(null)}
         >
           <div
-            class="bg-mantle border border-border rounded-xl p-6 max-w-sm w-full"
+            class="bg-surface border border-border-strong rounded-card p-6 max-w-sm w-full"
             onClick={e => e.stopPropagation()}
           >
             <div class="flex items-center justify-between mb-4">
@@ -335,7 +335,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
             {infoClimb.tags.length > 0 && (
               <div class="flex flex-wrap gap-1 mb-3">
                 {infoClimb.tags.map(t => (
-                  <span key={t} class="inline-flex items-center bg-surface2 text-muted text-[0.68rem] font-medium px-1.5 py-0.5 rounded">{t}</span>
+                  <span key={t} class="lp-chip text-[0.68rem]">{t}</span>
                 ))}
               </div>
             )}
@@ -357,7 +357,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
       )}
 
       {/* Desktop table */}
-      <div class="hidden md:block overflow-x-auto rounded-lg border border-border">
+      <div class="hidden md:block overflow-x-auto rounded-card border border-border">
         <table class="w-full border-collapse text-sm">
           <thead>
             <tr class="bg-surface">
@@ -430,7 +430,7 @@ export default function ClimbTable({ initialClimbs, isAdmin, dataKey, grades = G
 
       {isAdmin && !editingId && (
         <button
-          class="hidden md:block mt-2 w-full border border-dashed border-border text-accent text-sm font-semibold py-2 px-4 rounded-lg hover:bg-surface hover:border-accent transition-colors"
+          class="hidden md:block mt-2 w-full border border-dashed border-border text-accent text-sm font-semibold py-2 px-4 rounded-card hover:bg-surface hover:border-accent transition-colors"
           onClick={startNew}
         >
           + Add climb

@@ -48,14 +48,14 @@ export default function ClimbRowEdit({ draft, saving, grades = GRADES, onChange,
       <td class="td">
         <div class="flex gap-1.5">
           <button
-            class="text-xs font-semibold px-2.5 py-1 rounded bg-accent text-mantle hover:bg-accent-h transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+            class="text-xs font-semibold px-2.5 py-1 rounded bg-accent text-on-accent hover:bg-accent-h transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
             onClick={onSave}
             disabled={saving}
           >
             {saving ? '…' : 'Save'}
           </button>
           <button
-            class="text-xs font-semibold px-2.5 py-1 rounded bg-surface2 text-muted hover:text-cream transition-colors"
+            class="text-xs font-semibold px-2.5 py-1 rounded bg-surface2 text-muted hover:text-text transition-colors"
             onClick={onCancel}
           >
             Cancel

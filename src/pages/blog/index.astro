@@ -9,7 +9,7 @@ const reviews = (await getCollection('gym-reviews')).sort(
 
 <BaseLayout title="Hanoi Bouldering Gym Reviews — Climbing Tracker">
 
-  <p class="mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
+  <p class="mb-3 lp-eyebrow">
     Hanoi Bouldering Gym Reviews
   </p>
 
@@ -17,7 +17,7 @@ const reviews = (await getCollection('gym-reviews')).sort(
     {reviews.map((review) => (
       <a
         href={`/blog/${review.id}`}
-        class="block bg-surface border border-border rounded-lg px-5 py-4 hover:border-accent transition-colors group"
+        class="block lp-card lp-card-link px-5 py-4 hover:no-underline group"
       >
         <div class="flex items-baseline justify-between gap-4">
           <span class="font-semibold text-text group-hover:text-accent transition-colors">

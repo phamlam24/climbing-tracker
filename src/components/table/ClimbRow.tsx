@@ -36,7 +36,7 @@ export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete,
       <td class="td">
         <div class="flex flex-wrap gap-1">
           {climb.tags.map(t => (
-            <span key={t} class="inline-flex items-center bg-surface2 text-muted text-[0.68rem] font-medium px-1.5 py-0.5 rounded">
+            <span key={t} class="lp-chip text-[0.68rem]">
               {t}
             </span>
           ))}
@@ -59,7 +59,7 @@ export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete,
           <div class="flex gap-1.5">
             {onSend && (
               <button
-                class="text-xs font-semibold px-2 py-1 rounded bg-accent text-mantle hover:bg-accent-h transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+                class="text-xs font-semibold px-2 py-1 rounded bg-accent text-on-accent hover:bg-accent-h transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
                 onClick={onSend}
                 disabled={editingAny}
               >
@@ -67,7 +67,7 @@ export default function ClimbRow({ climb, isAdmin, editingAny, onEdit, onDelete,
               </button>
             )}
             <button
-              class="text-xs font-semibold px-2 py-1 rounded bg-surface2 text-text hover:bg-accent hover:text-mantle transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+              class="text-xs font-semibold px-2 py-1 rounded bg-surface2 text-text hover:bg-accent hover:text-on-accent transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
               onClick={onEdit}
               disabled={editingAny}
             >

@@ -37,27 +37,31 @@ const lastClimb = climbs.reduce((max: string, c: { date: string }) => c.date > m
     <GymReviews />
   </div>
 
-  <p class="mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
+  <p class="mb-3 lp-eyebrow">
     Boulders
   </p>
-  <ClimbTable
-    client:load
-    initialClimbs={climbs}
-    isAdmin={admin}
-    dataKey="bouldering"
-  />
+  <div class="lp-compact">
+    <ClimbTable
+      client:load
+      initialClimbs={climbs}
+      isAdmin={admin}
+      dataKey="bouldering"
+    />
+  </div>
 
-  <p class="mt-10 mb-3 text-[0.7rem] font-bold uppercase tracking-widest text-overlay">
+  <p class="mt-10 mb-3 lp-eyebrow">
     Rope
   </p>
-  <ClimbTable
-    client:load
-    initialClimbs={leadClimbs}
-    isAdmin={admin}
-    dataKey="lead"
-    grades={LEAD_GRADES}
-    defaultGrade="6a"
-  />
+  <div class="lp-compact">
+    <ClimbTable
+      client:load
+      initialClimbs={leadClimbs}
+      isAdmin={admin}
+      dataKey="lead"
+      grades={LEAD_GRADES}
+      defaultGrade="6a"
+    />
+  </div>
 
   <Fragment slot="footer-extra">last climb recorded {lastClimb} · website code last updated {lastUpdated}</Fragment>
 

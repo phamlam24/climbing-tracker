@@ -1,0 +1,11 @@
+/*
+  Suite fonts, self-hosted via Fontsource. Each file is split by
+  unicode-range, so the browser only downloads the subsets a page actually
+  renders (Vietnamese glyphs cost nothing on an English-only page), and a
+  family that's never used on a page (e.g. mono on status) isn't fetched.
+
+  Budget (latin, woff2): Inter 48KB, Space Grotesk 22KB, JetBrains Mono 40KB.
+*/
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/space-grotesk/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';

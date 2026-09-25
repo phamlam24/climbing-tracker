@@ -1,62 +1,16 @@
 @import "tailwindcss";
-@import "@catppuccin/tailwindcss/macchiato.css";
+/* Suite design system — generated copy, see ./lampham/README.md. Accent
+   (green) comes from <html data-app="climb">. */
+@import "./lampham/index.css";
 @plugin "@tailwindcss/typography";
 
 /*
-  Semantic aliases — map our design vocabulary onto Catppuccin Macchiato tokens.
-  Components use these names (bg-surface, text-muted, etc.) and never reference
-  ctp-* directly, so swapping flavors only requires changing these mappings.
-
-  Palette roles:
-    green  — primary accent (buttons, progress bars, active links)
-    teal   — secondary accent (hover tints, V4 grades, media links)
-    peach  — warning / mid-grade highlight (V7–V8)
-    red    — danger (delete, errors, V11+ grades)
+  App-local palette roles on top of the suite tokens:
+    grade pills use Catppuccin hues by difficulty band (below) — they're
+    data colours, not UI accents, so they live here, not in design/.
 */
-@theme {
-  --color-base:     var(--color-ctp-base);       /* #24273a — page bg */
-  --color-mantle:   var(--color-ctp-mantle);     /* #1e2030 — deepest bg */
-  --color-crust:    var(--color-ctp-crust);      /* #181926 — borders, lines */
-  --color-surface:  var(--color-ctp-surface0);   /* #363a4f — card / table bg */
-  --color-surface2: var(--color-ctp-surface1);   /* #494d64 — elevated elements */
-  --color-border:   var(--color-ctp-surface0);   /* same as surface, subtle */
-  --color-text:     var(--color-ctp-text);       /* #cad3f5 — primary text */
-  --color-muted:    var(--color-ctp-subtext1);   /* #b8c0e0 — secondary text */
-  --color-overlay:  var(--color-ctp-overlay1);   /* #8087a2 — placeholder / disabled */
 
-  /* Accent roles */
-  --color-accent:   var(--color-ctp-green);      /* #a6da95 — primary accent */
-  --color-accent-h: var(--color-ctp-teal);       /* #8bd5ca — hover / secondary */
-  --color-danger:   var(--color-ctp-red);        /* #ed8796 — delete / errors */
-  --color-warn:     var(--color-ctp-peach);      /* #f5a97f — mid-grade warning */
-  --color-favorite: var(--color-ctp-yellow);     /* #eed49f — favorite star */
-
-  --font-sans: 'Inter', system-ui, sans-serif;
-}
-
-/* ── Base ───────────────────────────────────────────────────── */
 @layer base {
-  *, *::before, *::after { box-sizing: border-box; }
-
-  body {
-    background-color: var(--color-mantle);
-    color: var(--color-text);
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a {
-    color: var(--color-accent);
-    text-decoration: none;
-  }
-  a:hover {
-    color: var(--color-accent-h);
-    text-decoration: underline;
-  }
-
   select option {
     background: var(--color-surface2);
     color: var(--color-text);
@@ -73,7 +27,7 @@
     @apply px-3.5 py-2.5 align-middle;
   }
   .field {
-    @apply bg-mantle border border-border text-text rounded text-[0.82rem] px-2 py-1
+    @apply bg-mantle border border-border-strong text-text rounded-control text-[0.82rem] px-2 py-1
            font-sans transition-colors outline-none focus:border-accent;
   }
 }
@@ -93,7 +47,7 @@
 }
 .grade--VB {
   background: color-mix(in srgb, var(--grade-color) 10%, transparent);
-  color: var(--color-ctp-blue-950);
+  color: color-mix(in oklab, var(--grade-color) 70%, var(--color-mantle));
 }
 .grade--V0 {
   background: color-mix(in srgb, var(--grade-color) 10%, transparent);
@@ -263,7 +217,7 @@
   border: 1px solid var(--color-danger);
   color: var(--color-danger);
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-control);
   margin-bottom: 0.75rem;
   font-size: 0.82rem;
 }

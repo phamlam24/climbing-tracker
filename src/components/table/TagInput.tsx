@@ -21,7 +21,7 @@ export default function TagInput({ value, onChange }: Props) {
     <div>
       <div class="flex flex-wrap gap-1 mb-1">
         {value.map(t => (
-          <span key={t} class="inline-flex items-center gap-0.5 bg-surface2 text-cream text-[0.68rem] font-medium px-1.5 py-0.5 rounded">
+          <span key={t} class="lp-chip gap-0.5 text-[0.68rem] text-text">
             {t}
             <button
               type="button"
